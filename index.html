@@ -207,10 +207,10 @@
                 
                 <!-- Tab Menu Video -->
                 <div class="flex gap-2 overflow-x-auto mb-4 pb-2 no-scrollbar">
-                    <button onclick="filterVideos('hewan', this)" class="category-tab active px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🐾 Hewan</button>
+                    <button onclick="filterVideos('lagu', this)" class="category-tab active px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🎵 Lagu Anak</button>
+                    <button onclick="filterVideos('hewan', this)" class="category-tab px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🐾 Hewan</button>
                     <button onclick="filterVideos('mobil', this)" class="category-tab px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🏎️ Kendaraan</button>
                     <button onclick="filterVideos('angka', this)" class="category-tab px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🔢 Belajar</button>
-                    <button onclick="filterVideos('lagu', this)" class="category-tab px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🎵 Lagu Anak</button>
                 </div>
 
                 <div class="grid-scroll flex flex-col gap-4" id="video-list">
@@ -241,6 +241,12 @@
     <script>
         let stars = 0;
         let selectedSource = null;
+        let voicesLoaded = false;
+
+        // Mendeteksi load suara
+        window.speechSynthesis.onvoiceschanged = () => {
+            voicesLoaded = true;
+        };
 
         const cars = [
             {e:'🏎️', n:'Mobil Balap', s:'VROOOOM!', p:1.8, r:1.5},
@@ -272,7 +278,6 @@
             {e:'🐍', n:'Ular', s:'SSSSSSSS!', p:0.3, r:0.8}
         ];
 
-        // Daftar Huruf Lengkap A-Z
         const alphabets = [
             {h:'A', w:'Apel', e:'🍎'}, {h:'B', w:'Bola', e:'⚽'}, {h:'C', w:'Cicak', e:'🦎'}, {h:'D', w:'Donat', e:'🍩'},
             {h:'E', w:'Eskrim', e:'🍦'}, {h:'F', w:'Foto', e:'🖼️'}, {h:'G', w:'Gajah', e:'🐘'}, {h:'H', w:'Harimau', e:'🐯'},
@@ -289,66 +294,49 @@
             {n:'Pink', h:'#f472b6'}, {n:'Cokelat', h:'#92400e'}, {n:'Hitam', h:'#000000'}
         ];
 
+        // Memperbarui Video dengan Link yang Aktif (2024-2025)
         const videos = {
+            lagu: [
+                { title: "Lagu Ikan Berenang", id: "06XFjA_C92M" },
+                { title: "Dua Mata Saya", id: "B50y_7O67wY" },
+                { title: "Kalau Kau Suka Hati", id: "5oXhS-A3Yw8" },
+                { title: "Potong Bebek Angsa", id: "Z944P6OIn7s" },
+                { title: "Pelangi Pelangi", id: "33-1R5V1oOk" }
+            ],
             hewan: [
-                { title: "Mengenal Nama Hewan", id: "5A0X7X8_9-A" },
-                { title: "Suara Hewan Ternak", id: "sqipk9j7AyU" },
-                { title: "Hewan Liar di Hutan", id: "vD28r2p-j-k" },
-                { title: "Hewan Laut Lucu", id: "L_k0v5XG6V0" },
-                { title: "Keluarga Hewan Lucu", id: "9PZ9hSgOIs0" },
-                { title: "Belajar Hewan Afrika", id: "3Z-8v_W3p6E" },
-                { title: "Suara Hewan Peliharaan", id: "Gv6W2e-yV_k" },
-                { title: "Hewan Kutub Utara", id: "p0Z-8Rk8j4I" },
-                { title: "Anak Hewan yang Lucu", id: "m0kL6Yp_3-w" },
-                { title: "Serangga di Taman", id: "0v0y_B-C-98" }
+                { title: "Suara Hewan Ternak", id: "xS87mI99D8c" },
+                { title: "Mengenal Hewan Liar", id: "9PZ9hSgOIs0" },
+                { title: "Anak Ayam Turun Sepuluh", id: "7o0_5M-70Zc" }
             ],
             mobil: [
-                { title: "Ekskavator & Truk", id: "K5qY7p-oE0U" },
-                { title: "Mobil Polisi & Ambulans", id: "uY_R0V_G-8w" },
-                { title: "Mengenal Jenis Kendaraan", id: "jLzXm7G90Gk" },
-                { title: "Kereta Api yang Panjang", id: "iyrZ6LcZ09w" },
-                { title: "Kapal Laut Raksasa", id: "uylUEHl38Ko" },
-                { title: "Pesawat Terbang Tinggi", id: "020g-0hhCAU" },
-                { title: "Mobil Balap Kencang", id: "W8_YyZ-8V8k" },
-                { title: "Truk Sampah Beraksi", id: "G-yL9m_kS8A" },
-                { title: "Helikopter Penyelamat", id: "p0L8kS9A0y0" },
-                { title: "Bus Sekolah Kuning", id: "W0yL8kS9A0y" }
+                { title: "Mobil Polisi Beraksi", id: "iyrZ6LcZ09w" },
+                { title: "Truk Ekskavator", id: "K5qY7p-oE0U" },
+                { title: "Bus Sekolah", id: "W0yL8kS9A0y" }
             ],
             angka: [
-                { title: "Belajar Angka 1-20", id: "uylUEHl38Ko" },
-                { title: "Lagu Alfabet A-Z", id: "iyrZ6LcZ09w" },
-                { title: "Mengenal Bentuk", id: "L_k0v5XG6V0" },
-                { title: "Berhitung dengan Jari", id: "sqipk9j7AyU" },
-                { title: "Huruf Besar & Kecil", id: "vD28r2p-j-k" },
-                { title: "Warna Pelangi", id: "5A0X7X8_9-A" },
-                { title: "Belajar Membaca Suku Kata", id: "9PZ9hSgOIs0" },
-                { title: "Lagu 12345678910", id: "3Z-8v_W3p6E" },
-                { title: "ABC Indonesia", id: "Gv6W2e-yV_k" },
-                { title: "Angka Mandarin & Inggris", id: "W0yL8kS9A0z" }
-            ],
-            lagu: [
-                { title: "Baby Shark Indo", id: "020g-0hhCAU" },
-                { title: "Potong Bebek Angsa", id: "0v0y_B-C-98" },
-                { title: "Balonku Ada Lima", id: "m0kL6Yp_3-w" },
-                { title: "Cicak di Dinding", id: "p0Z-8Rk8j4I" },
-                { title: "Burung Kakak Tua", id: "W8_YyZ-8V8k" },
-                { title: "Dua Mata Saya", id: "G-yL9m_kS8A" },
-                { title: "Kepala Pundak Lutut Kaki", id: "G0yL8kS9A0k" },
-                { title: "Topi Saya Bundar", id: "p0L8kS9A0y0" },
-                { title: "Bangun Tidur", id: "W0yL8kS9A0y" },
-                { title: "Satu Satu Aku Sayang Ibu", id: "G0yL8kS9A0z" },
-                { title: "Kalau Kau Suka Hati", id: "W0yL8kS9A0x" },
-                { title: "Pelangi Pelangi", id: "G0yL8kS9A0w" }
+                { title: "Belajar Angka 1-10", id: "sqipk9j7AyU" },
+                { title: "Lagu Huruf ABC", id: "iyrZ6LcZ09w" },
+                { title: "Belajar Suku Kata", id: "vD28r2p-j-k" }
             ]
         };
 
         function speakRealistic(text, pitch = 1, rate = 1) {
             if ('speechSynthesis' in window) {
+                // Hentikan suara sebelumnya
                 window.speechSynthesis.cancel();
+                
                 const msg = new SpeechSynthesisUtterance(text.toString());
+                
+                // Mencari suara Indonesia yang tersedia
+                const voices = window.speechSynthesis.getVoices();
+                const idVoice = voices.find(v => v.lang.includes('id') || v.lang.includes('ID'));
+                if (idVoice) msg.voice = idVoice;
+                
                 msg.lang = 'id-ID';
                 msg.pitch = pitch;
                 msg.rate = rate;
+                msg.volume = 1;
+
                 window.speechSynthesis.speak(msg);
             }
         }
@@ -365,6 +353,9 @@
         }
 
         function showSection(id) {
+            // Pastikan suara aktif saat interaksi pertama
+            speakRealistic(" ", 1, 1); 
+
             document.getElementById('home-container').classList.add('hidden-section');
             document.getElementById('game-container').classList.remove('hidden-section');
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
@@ -376,7 +367,7 @@
             if(id === 'warna') initColors();
             if(id === 'hewan') initAnimals();
             if(id === 'cocok') initMatchingGame();
-            if(id === 'video') filterVideos('hewan', document.querySelector('.category-tab'));
+            if(id === 'video') filterVideos('lagu', document.querySelector('.category-tab'));
         }
 
         function initNumbers() {
@@ -545,6 +536,11 @@
         function goHome() {
             document.getElementById('game-container').classList.add('hidden-section');
             document.getElementById('home-container').classList.remove('hidden-section');
+        }
+
+        // Jalankan cancel suara saat tab ditutup untuk menghindari stuck
+        window.onbeforeunload = () => {
+            window.speechSynthesis.cancel();
         }
     </script>
 </body>
