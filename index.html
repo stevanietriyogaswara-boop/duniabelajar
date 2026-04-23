@@ -17,7 +17,7 @@
             padding: 0;
         }
         .kids-font { font-family: 'Fredoka One', cursive; }
-        .card-bounce:active { transform: scale(0.95); }
+        .card-bounce:active { transform: scale(0.92); }
         .hidden-section { display: none !important; }
         
         @keyframes float {
@@ -25,35 +25,22 @@
             50% { transform: translateY(-15px); }
         }
         .floating { animation: float 3s ease-in-out infinite; }
-        .progress-fill { transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
         .grid-scroll {
             max-height: 55vh;
             overflow-y: auto;
             padding: 10px;
             scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
         }
 
-        /* Gaya TV */
         .tv-frame {
             background: #334155;
-            padding: 15px;
-            border-radius: 2rem;
-            border-bottom: 12px solid #1e293b;
+            padding: 12px;
+            border-radius: 1.5rem;
+            border-bottom: 8px solid #1e293b;
             position: relative;
-            margin-bottom: 20px;
-        }
-        .tv-antenna {
-            width: 4px; height: 30px;
-            background: #475569;
-            margin: -40px auto 10px;
-            position: relative;
-        }
-        .tv-antenna::before {
-            content: ''; position: absolute;
-            top: -5px; left: -3px;
-            width: 10px; height: 10px;
-            background: #ef4444; border-radius: 50%;
+            margin-bottom: 15px;
         }
 
         .video-wrapper {
@@ -70,23 +57,40 @@
             width: 100%; height: 100%;
         }
 
-        .category-tab {
-            transition: all 0.3s;
-        }
-        .category-tab.active {
-            background-color: #f43f5e;
-            color: white;
-            transform: scale(1.05);
+        #start-overlay {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .animal-card, .car-card {
+            transition: all 0.2s;
+        }
+        .animal-card:active, .car-card:active {
+            transform: scale(0.9);
+            background-color: #f3e8ff;
+        }
+
+        .grid-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .grid-scroll::-webkit-scrollbar-thumb {
+            background-color: #ddd;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 relative text-slate-800">
 
-    <!-- Beranda -->
-    <div id="home-container" class="w-full max-w-2xl flex flex-col items-center">
+    <!-- LAYAR MULAI -->
+    <div id="start-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center text-white">
+        <div class="text-9xl mb-4 floating">🌟</div>
+        <h1 class="kids-font text-5xl mb-8 text-center px-4 drop-shadow-lg text-yellow-300">Dunia Belajar</h1>
+        <button onclick="startApp()" class="bg-yellow-400 text-blue-900 px-10 py-5 rounded-full kids-font text-3xl shadow-xl border-b-8 border-yellow-600 active:translate-y-2 active:border-b-0 transition-all">
+            ▶ MULAI!
+        </button>
+    </div>
+
+    <!-- BERANDA UTAMA -->
+    <div id="home-container" class="w-full max-w-2xl flex flex-col items-center hidden-section">
         <div class="w-full bg-white rounded-3xl p-4 shadow-md mb-6 flex flex-col items-center border-b-4 border-blue-100">
             <div class="flex justify-between w-full items-center mb-2 px-2">
                 <div class="flex items-center gap-2">
@@ -98,16 +102,12 @@
                     <span id="total-stars" class="kids-font text-xl text-orange-500">0</span>
                 </div>
             </div>
-            <div class="w-full bg-gray-100 h-6 rounded-full overflow-hidden border-2 border-gray-50 p-1">
-                <div id="progress-bar" class="progress-fill bg-gradient-to-r from-yellow-400 to-orange-500 h-full rounded-full" style="width: 0%"></div>
+            <div class="w-full bg-gray-100 h-6 rounded-full overflow-hidden p-1">
+                <div id="progress-bar" class="bg-gradient-to-r from-yellow-400 to-orange-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
             </div>
         </div>
 
-        <header class="text-center mb-6">
-            <h1 class="kids-font text-5xl text-blue-600 drop-shadow-md">Dunia Belajar</h1>
-        </header>
-
-        <main class="grid grid-cols-2 gap-4 w-full px-2">
+        <main class="grid grid-cols-2 gap-4 w-full px-2 overflow-y-auto pb-10">
             <button onclick="showSection('angka')" class="bg-orange-400 p-6 rounded-3xl shadow-lg border-b-8 border-orange-600 text-white card-bounce flex flex-col items-center">
                 <div class="text-5xl mb-2">🔢</div>
                 <div class="kids-font text-xl">Angka</div>
@@ -122,11 +122,11 @@
             </button>
             <button onclick="showSection('hewan')" class="bg-purple-400 p-6 rounded-3xl shadow-lg border-b-8 border-purple-600 text-white card-bounce flex flex-col items-center">
                 <div class="text-5xl mb-2">🦁</div>
-                <div class="kids-font text-xl">Dunia Hewan</div>
+                <div class="kids-font text-xl">Hewan</div>
             </button>
             <button onclick="showSection('mobil')" class="bg-slate-700 p-6 rounded-3xl shadow-lg border-b-8 border-slate-900 text-white card-bounce flex flex-col items-center col-span-2">
                 <div class="text-5xl mb-2">🏎️</div>
-                <div class="kids-font text-xl">Garasi Kendaraan</div>
+                <div class="kids-font text-xl">Kendaraan</div>
             </button>
             <button onclick="showSection('cocok')" class="bg-red-400 p-4 rounded-3xl shadow-lg border-b-8 border-red-600 text-white card-bounce flex flex-col items-center">
                 <div class="text-4xl mb-2">🧩</div>
@@ -139,95 +139,79 @@
         </main>
     </div>
 
-    <!-- Container Game -->
+    <!-- GAME CONTAINER -->
     <div id="game-container" class="w-full max-w-2xl hidden-section">
         
-        <!-- Angka Section -->
-        <section id="angka" class="hidden-section text-center">
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-orange-400">
-                <h2 class="kids-font text-3xl text-orange-500 mb-4">Ayo Kenal Angka!</h2>
-                <div class="bg-orange-50 p-6 rounded-2xl mb-6 min-h-[220px] flex flex-col items-center justify-center border-2 border-dashed border-orange-200">
-                    <div id="big-number" class="text-9xl kids-font text-orange-500 floating">1</div>
-                    <div id="number-objects" class="text-4xl mt-4 flex flex-wrap justify-center gap-2 h-20"></div>
-                </div>
-                <div class="grid grid-cols-5 gap-2 grid-scroll" id="number-grid"></div>
-            </div>
-        </section>
+        <section id="angka" class="hidden-section text-center"><div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-orange-400"><h2 class="kids-font text-3xl text-orange-500 mb-4">Kenal Angka</h2><div class="bg-orange-50 p-6 rounded-2xl mb-6 min-h-[200px] flex flex-col items-center justify-center border-2 border-dashed border-orange-200"><div id="big-number" class="text-9xl kids-font text-orange-500 floating">1</div><div id="number-objects" class="text-4xl mt-4 flex flex-wrap justify-center gap-2"></div></div><div class="grid grid-cols-5 gap-2 grid-scroll" id="number-grid"></div></div></section>
+        
+        <section id="huruf" class="hidden-section text-center"><div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-blue-400"><h2 class="kids-font text-3xl text-blue-500 mb-4">Kenal Huruf</h2><div class="bg-blue-50 p-6 rounded-2xl mb-6 min-h-[200px] flex flex-col items-center justify-center border-2 border-dashed border-blue-200"><div id="letter-big" class="text-9xl kids-font text-blue-600 floating">A</div><p id="letter-word" class="text-2xl font-bold text-gray-700 mt-2 uppercase"></p></div><div class="grid grid-cols-6 gap-2 grid-scroll" id="letter-grid"></div></div></section>
 
-        <!-- Huruf Section -->
-        <section id="huruf" class="hidden-section text-center">
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-blue-400">
-                <h2 class="kids-font text-3xl text-blue-500 mb-4">Kenal Huruf A-Z</h2>
-                <div class="bg-blue-50 p-6 rounded-2xl mb-6 min-h-[240px] flex flex-col items-center justify-center border-2 border-dashed border-blue-200">
-                    <div id="letter-big" class="text-9xl kids-font text-blue-600 floating">A</div>
-                    <p id="letter-word" class="text-2xl font-bold text-gray-700 mt-2 uppercase"></p>
-                </div>
-                <div class="grid grid-cols-6 gap-2 grid-scroll" id="letter-grid"></div>
-            </div>
-        </section>
-
-        <!-- Garasi Section -->
         <section id="mobil" class="hidden-section text-center">
             <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-slate-700">
-                <h2 class="kids-font text-3xl text-slate-700 mb-4">Garasi Kendaraan</h2>
-                <div id="car-display" class="bg-slate-100 p-8 rounded-2xl mb-4 min-h-[240px] flex flex-col items-center justify-center relative">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="kids-font text-2xl text-slate-700">Garasi Kendaraan</h2>
+                    <select id="car-filter" onchange="initCars(); vibrateDevice(20);" class="bg-slate-100 p-2 rounded-xl kids-font text-sm text-slate-700 outline-none border-2 border-slate-200">
+                        <option value="all">Semua</option>
+                        <option value="city">Kota 🚗</option>
+                        <option value="emergency">Darurat 🚑</option>
+                        <option value="work">Kerja 🚜</option>
+                        <option value="air">Udara 🚀</option>
+                        <option value="water">Air 🚢</option>
+                        <option value="rail">Rel 🚂</option>
+                    </select>
+                </div>
+                <div class="bg-slate-100 p-8 rounded-2xl mb-4 min-h-[200px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300">
                     <div id="car-emoji" class="text-9xl floating mb-4">🏎️</div>
                     <h3 id="car-name" class="kids-font text-3xl text-slate-800 uppercase">Mobil Balap</h3>
                 </div>
-                <div class="grid grid-cols-4 gap-3 grid-scroll" id="car-grid"></div>
+                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3 grid-scroll" id="car-grid"></div>
             </div>
         </section>
 
-        <!-- Hewan Section -->
+        <section id="warna" class="hidden-section text-center"><div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-green-400"><h2 class="kids-font text-3xl text-green-500 mb-4">Warna</h2><div id="color-box" class="w-full h-32 rounded-2xl mb-4 shadow-inner border-4 border-gray-100"></div><h3 id="color-name" class="kids-font text-3xl mb-4 uppercase">Merah</h3><div class="grid grid-cols-3 gap-2 grid-scroll" id="color-grid"></div></div></section>
+
         <section id="hewan" class="hidden-section text-center">
             <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-purple-400">
-                <h2 class="kids-font text-3xl text-purple-500 mb-4">Dunia Hewan</h2>
-                <div id="animal-display" class="bg-purple-50 p-8 rounded-2xl mb-4 min-h-[240px] flex flex-col items-center justify-center">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="kids-font text-2xl text-purple-600">Dunia Hewan</h2>
+                    <select id="animal-filter" onchange="initAnimals(); vibrateDevice(20);" class="bg-purple-100 p-2 rounded-xl kids-font text-sm text-purple-700 outline-none border-2 border-purple-200">
+                        <option value="all">Semua (100+)</option>
+                        <option value="dino">Dinosaurus 🦖</option>
+                        <option value="pet">Peliharaan 🐶</option>
+                        <option value="wild">Hutan 🦁</option>
+                        <option value="sea">Laut 🐬</option>
+                        <option value="bird">Burung 🐦</option>
+                        <option value="bug">Serangga 🐞</option>
+                    </select>
+                </div>
+                <div class="bg-purple-50 p-6 rounded-2xl mb-4 min-h-[180px] flex flex-col items-center justify-center relative">
                     <div id="animal-emoji" class="text-9xl mb-2 floating">🦁</div>
                     <h3 id="animal-name" class="kids-font text-2xl text-gray-700 uppercase">Singa</h3>
                 </div>
-                <div class="grid grid-cols-4 gap-2 grid-scroll" id="animal-grid"></div>
+                <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 grid-scroll" id="animal-grid"></div>
             </div>
         </section>
 
-        <!-- Warna Section -->
-        <section id="warna" class="hidden-section text-center">
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-green-400">
-                <h2 class="kids-font text-3xl text-green-500 mb-4">Mengenal Warna</h2>
-                <div id="color-box" class="w-full h-32 rounded-2xl mb-4 shadow-inner border-4 border-gray-100"></div>
-                <h3 id="color-name" class="kids-font text-3xl mb-4 uppercase">Merah</h3>
-                <div class="grid grid-cols-3 gap-2 grid-scroll" id="color-grid"></div>
-            </div>
-        </section>
-
-        <!-- Video TV Section -->
-        <section id="video" class="hidden-section text-center">
-            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-rose-400">
-                <h2 class="kids-font text-2xl text-rose-500 mb-4">TV Edukasi Anak</h2>
-                
-                <!-- Tab Menu Video -->
-                <div class="flex gap-2 overflow-x-auto mb-4 pb-2 no-scrollbar">
-                    <button onclick="filterVideos('lagu', this)" class="category-tab active px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🎵 Lagu Anak</button>
-                    <button onclick="filterVideos('hewan', this)" class="category-tab px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🐾 Hewan</button>
-                    <button onclick="filterVideos('mobil', this)" class="category-tab px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🏎️ Kendaraan</button>
-                    <button onclick="filterVideos('angka', this)" class="category-tab px-4 py-2 bg-rose-100 rounded-full kids-font text-sm whitespace-nowrap">🔢 Belajar</button>
-                </div>
-
-                <div class="grid-scroll flex flex-col gap-4" id="video-list">
-                    <!-- Video akan dimuat di sini secara dinamis -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Matching Game Section -->
         <section id="cocok" class="hidden-section text-center">
             <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-red-400">
-                <h2 class="kids-font text-2xl text-red-500 mb-4">Pasangkan Gambar</h2>
-                <div class="flex justify-around mb-6 p-4 bg-gray-50 rounded-2xl min-h-[110px]">
-                    <div id="source-container" class="flex gap-3 flex-wrap justify-center"></div>
+                <h2 class="kids-font text-3xl text-red-500 mb-4">Tebak Bayangan</h2>
+                <div class="flex flex-col items-center gap-8 py-4">
+                    <div id="puzzle-target" class="text-9xl opacity-20 grayscale filter bg-slate-100 p-8 rounded-full border-4 border-red-100">❓</div>
+                    <div class="kids-font text-xl text-slate-500">Pilih yang mana ya?</div>
+                    <div class="grid grid-cols-3 gap-4" id="puzzle-options"></div>
                 </div>
-                <div id="target-container" class="grid grid-cols-2 gap-4"></div>
-                <button onclick="initMatchingGame()" class="mt-4 bg-red-500 text-white px-6 py-2 rounded-full font-bold shadow">Main Lagi</button>
+            </div>
+        </section>
+
+        <section id="video" class="hidden-section text-center">
+            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-rose-400">
+                <h2 class="kids-font text-2xl text-rose-500 mb-4">TV Anak Pintar</h2>
+                <div class="mb-4 flex gap-2">
+                    <input type="text" id="yt-search-input" placeholder="Cari: tayo, kereta, lagu..." class="w-full p-3 rounded-full border-4 border-rose-200 text-center kids-font text-slate-600 outline-none focus:border-rose-400 shadow-inner">
+                    <button onclick="searchYoutube(document.getElementById('yt-search-input').value)" class="bg-rose-500 text-white px-6 rounded-full kids-font active:scale-95 shadow-md">CARI</button>
+                </div>
+                <div class="flex gap-2 overflow-x-auto mb-4 pb-2 no-scrollbar" id="video-tabs"></div>
+                <div class="grid-scroll space-y-4" id="video-list"></div>
             </div>
         </section>
 
@@ -240,105 +224,31 @@
 
     <script>
         let stars = 0;
-        let selectedSource = null;
-        let voicesLoaded = false;
+        let isAppStarted = false;
 
-        // Mendeteksi load suara
-        window.speechSynthesis.onvoiceschanged = () => {
-            voicesLoaded = true;
-        };
-
-        const cars = [
-            {e:'🏎️', n:'Mobil Balap', s:'VROOOOM!', p:1.8, r:1.5},
-            {e:'🚒', n:'Pemadam', s:'Wiuuu wiuuu!', p:1.2, r:1.0},
-            {e:'🚑', n:'Ambulans', s:'Uwiu uwiu!', p:1.4, r:1.2},
-            {e:'🚓', n:'Polisi', s:'Ninu ninu!', p:1.5, r:1.1},
-            {e:'🚜', n:'Traktor', s:'BRRRRUM BRRRRUM!', p:0.5, r:0.7},
-            {e:'🚚', n:'Truk', s:'HONNNN!', p:0.6, r:0.8},
-            {e:'🚌', n:'Bus', s:'DIN DIN!', p:0.8, r:0.9},
-            {e:'🚂', n:'Kereta', s:'TUT TUT GUJES!', p:0.7, r:0.8},
-            {e:'🚀', n:'Roket', s:'WUUUUUSSS!', p:0.4, r:1.8},
-            {e:'🚁', n:'Helikopter', s:'POK POK POK!', p:0.6, r:1.5},
-            {e:'🚢', n:'Kapal', s:'TUUUUUUN!', p:0.4, r:0.6},
-            {e:'✈️', n:'Pesawat', s:'WUUUUUNG!', p:0.5, r:1.2}
-        ];
-
-        const animals = [
-            {e:'🦁', n:'Singa', s:'ROAAARRR!', p:0.5, r:0.6},
-            {e:'🐱', n:'Kucing', s:'MEOOOONG!', p:1.5, r:1.2},
-            {e:'🐶', n:'Anjing', s:'GUK GUK!', p:0.8, r:1.2},
-            {e:'🐮', n:'Sapi', s:'MOOOOO!', p:0.5, r:0.7},
-            {e:'🐥', n:'Ayam', s:'PETOK PETOK!', p:1.6, r:1.4},
-            {e:'🐘', n:'Gajah', s:'PREEEEET!', p:0.4, r:0.8},
-            {e:'🐸', n:'Katak', s:'TEOT BLUM!', p:0.7, r:0.8},
-            {e:'🐯', n:'Harimau', s:'GRRRRR!', p:0.6, r:0.7},
-            {e:'🐦', n:'Burung', s:'CWIT CWIT!', p:2.0, r:1.8},
-            {e:'🐵', n:'Monyet', s:'AAKK AAKK!', p:1.8, r:1.5},
-            {e:'🦆', n:'Bebek', s:'KWEK KWEK!', p:1.4, r:1.3},
-            {e:'🐍', n:'Ular', s:'SSSSSSSS!', p:0.3, r:0.8}
-        ];
-
-        const alphabets = [
-            {h:'A', w:'Apel', e:'🍎'}, {h:'B', w:'Bola', e:'⚽'}, {h:'C', w:'Cicak', e:'🦎'}, {h:'D', w:'Donat', e:'🍩'},
-            {h:'E', w:'Eskrim', e:'🍦'}, {h:'F', w:'Foto', e:'🖼️'}, {h:'G', w:'Gajah', e:'🐘'}, {h:'H', w:'Harimau', e:'🐯'},
-            {h:'I', w:'Ikan', e:'🐟'}, {h:'J', w:'Jerapah', e:'🦒'}, {h:'K', w:'Kucing', e:'🐱'}, {h:'L', w:'Lampu', e:'💡'},
-            {h:'M', w:'Mobil', e:'🚗'}, {h:'N', w:'Nanas', e:'🍍'}, {h:'O', w:'Obat', e:'💊'}, {h:'P', w:'Pisang', e:'🍌'},
-            {h:'Q', w:'Quran', e:'📖'}, {h:'R', w:'Roti', e:'🍞'}, {h:'S', w:'Sapi', e:'🐮'}, {h:'T', w:'Topi', e:'👒'},
-            {h:'U', w:'Ular', e:'🐍'}, {h:'V', w:'Vas', e:'🏺'}, {h:'W', w:'Wortel', e:'🥕'}, {h:'X', w:'Xylophone', e:'🎹'},
-            {h:'Y', w:'Yo-yo', e:'🪀'}, {h:'Z', w:'Zebra', e:'🦓'}
-        ];
-
-        const colors = [
-            {n:'Merah', h:'#ef4444'}, {n:'Biru', h:'#3b82f6'}, {n:'Hijau', h:'#22c55e'},
-            {n:'Kuning', h:'#eab308'}, {n:'Oranye', h:'#f97316'}, {n:'Ungu', h:'#a855f7'},
-            {n:'Pink', h:'#f472b6'}, {n:'Cokelat', h:'#92400e'}, {n:'Hitam', h:'#000000'}
-        ];
-
-        // Memperbarui Video dengan Link yang Aktif (2024-2025)
-        const videos = {
-            lagu: [
-                { title: "Lagu Ikan Berenang", id: "06XFjA_C92M" },
-                { title: "Dua Mata Saya", id: "B50y_7O67wY" },
-                { title: "Kalau Kau Suka Hati", id: "5oXhS-A3Yw8" },
-                { title: "Potong Bebek Angsa", id: "Z944P6OIn7s" },
-                { title: "Pelangi Pelangi", id: "33-1R5V1oOk" }
-            ],
-            hewan: [
-                { title: "Suara Hewan Ternak", id: "xS87mI99D8c" },
-                { title: "Mengenal Hewan Liar", id: "9PZ9hSgOIs0" },
-                { title: "Anak Ayam Turun Sepuluh", id: "7o0_5M-70Zc" }
-            ],
-            mobil: [
-                { title: "Mobil Polisi Beraksi", id: "iyrZ6LcZ09w" },
-                { title: "Truk Ekskavator", id: "K5qY7p-oE0U" },
-                { title: "Bus Sekolah", id: "W0yL8kS9A0y" }
-            ],
-            angka: [
-                { title: "Belajar Angka 1-10", id: "sqipk9j7AyU" },
-                { title: "Lagu Huruf ABC", id: "iyrZ6LcZ09w" },
-                { title: "Belajar Suku Kata", id: "vD28r2p-j-k" }
-            ]
-        };
-
-        function speakRealistic(text, pitch = 1, rate = 1) {
-            if ('speechSynthesis' in window) {
-                // Hentikan suara sebelumnya
-                window.speechSynthesis.cancel();
-                
-                const msg = new SpeechSynthesisUtterance(text.toString());
-                
-                // Mencari suara Indonesia yang tersedia
-                const voices = window.speechSynthesis.getVoices();
-                const idVoice = voices.find(v => v.lang.includes('id') || v.lang.includes('ID'));
-                if (idVoice) msg.voice = idVoice;
-                
-                msg.lang = 'id-ID';
-                msg.pitch = pitch;
-                msg.rate = rate;
-                msg.volume = 1;
-
-                window.speechSynthesis.speak(msg);
+        // Fungsi Getar (Haptic Feedback)
+        function vibrateDevice(ms = 30) {
+            if (navigator.vibrate) {
+                navigator.vibrate(ms);
             }
+        }
+
+        function startApp() {
+            isAppStarted = true;
+            vibrateDevice(50);
+            document.getElementById('start-overlay').classList.add('hidden-section');
+            document.getElementById('home-container').classList.remove('hidden-section');
+            speakRealistic("Ayo belajar bersama!");
+        }
+
+        function speakRealistic(text) {
+            if (!isAppStarted) return;
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'id-ID';
+            msg.pitch = 1.2;
+            msg.rate = 1;
+            window.speechSynthesis.speak(msg);
         }
 
         function addStar(amount = 1) {
@@ -348,14 +258,90 @@
             document.getElementById('progress-bar').style.width = ((stars % 20) * 5) + "%";
             if (stars > 0 && stars % 20 === 0) {
                 confetti();
-                speakRealistic("Luar biasa! Kamu naik level!", 1.5, 1);
+                vibrateDevice([100, 50, 100]); // Getar pola untuk naik level
+                speakRealistic("Luar biasa! Kamu naik level!");
             }
         }
 
-        function showSection(id) {
-            // Pastikan suara aktif saat interaksi pertama
-            speakRealistic(" ", 1, 1); 
+        // --- DATABASE ---
+        const alphabets = [{h:'A',w:'Apel',e:'🍎'},{h:'B',w:'Bola',e:'⚽'},{h:'C',w:'Cicak',e:'🦎'},{h:'D',w:'Donat',e:'🍩'},{h:'E',w:'Eskrim',e:'🍦'},{h:'F',w:'Foto',e:'🖼️'},{h:'G',w:'Gajah',e:'🐘'},{h:'H',w:'Harimau',e:'🐯'},{h:'I',w:'Ikan',e:'🐟'},{h:'J',w:'Jerapah',e:'🦒'},{h:'K',w:'Kucing',e:'🐱'},{h:'L',w:'Lampu',e:'💡'},{h:'M',w:'Mobil',e:'🚗'},{h:'N',w:'Nanas',e:'🍍'},{h:'O',w:'Obat',e:'💊'},{h:'P',w:'Pisang',e:'🍌'},{h:'Q',w:'Quran',e:'📖'},{h:'R',w:'Roti',e:'🍞'},{h:'S',w:'Sapi',e:'🐮'},{h:'T',w:'Topi',e:'👒'},{h:'U',w:'Ular',e:'🐍'},{h:'V',w:'Vas',e:'🏺'},{h:'W',w:'Wortel',e:'🥕'},{h:'X',w:'Xylophone',e:'🎹'},{h:'Y',w:'Yoyo',e:'🪀'},{h:'Z',w:'Zebra',e:'🦓'}];
+        
+        const carDB = [
+            {e:'🚗',n:'Mobil Merah',t:'city'},{e:'🚕',n:'Taksi',t:'city'},{e:'🚙',n:'Mobil Biru',t:'city'},{e:'🚌',n:'Bus Sekolah',t:'city'},{e:'🚎',n:'Bus Listrik',t:'city'},{e:'🏎️',n:'Mobil Balap',t:'city'},{e:'🏍️',n:'Motor Balap',t:'city'},{e:'🛵',n:'Motor Skuter',t:'city'},{e:'🚲',n:'Sepeda',t:'city'},{e:'🛺',n:'Bajaj',t:'city'},{e:'🚐',n:'Mobil Van',t:'city'},{e:'🚚',n:'Truk Barang',t:'city'},
+            {e:'🚑',n:'Ambulans',t:'emergency'},{e:'🚒',n:'Pemadam Kebakaran',t:'emergency'},{e:'🚓',n:'Mobil Polisi',t:'emergency'},{e:'🚔',n:'Patroli Polisi',t:'emergency'},{e:'🚁',n:'Helikopter Penyelamat',t:'emergency'},
+            {e:'🚜',n:'Traktor Sawah',t:'work'},{e:'🏗️',n:'Derek Konstruksi',t:'work'},{e:'🚛',n:'Truk Besar',t:'work'},{e:'🛻',n:'Mobil Pickup',t:'work'},
+            {e:'🚀',n:'Roket Luar Angkasa',t:'air'},{e:'✈️',n:'Pesawat Terbang',t:'air'},{e:'🛫',n:'Pesawat Lepas Landas',t:'air'},{e:'🛬',n:'Pesawat Mendarat',t:'air'},{e:'🪂',n:'Parasut',t:'air'},{e:'🛸',n:'Pesawat UFO',t:'air'},{e:'🚁',n:'Helikopter',t:'air'},
+            {e:'🚢',n:'Kapal Pesiar',t:'water'},{e:'🛥️',n:'Kapal Cepat',t:'water'},{e:'🚤',n:'Perahu Motor',t:'water'},{e:'🛳️',n:'Kapal Laut',t:'water'},{e:'⛵',n:'Perahu Layar',t:'water'},{e:'🛶',n:'Sampan',t:'water'},{e:'⛴️',n:'Kapal Feri',t:'water'},
+            {e:'🚂',n:'Kereta Uap',t:'rail'},{e:'🚆',n:'Kereta Cepat',t:'rail'},{e:'🚄',n:'Shinkansen',t:'rail'},{e:'🚇',n:'Kereta Bawah Tanah',t:'rail'},{e:'🚃',n:'Gerbong Kereta',t:'rail'},{e:'🚋',n:'Trem',t:'rail'},{e:'🚈',n:'LRT',t:'rail'}
+        ];
 
+        const colors = [{n:'Merah',h:'#ef4444'},{n:'Biru',h:'#3b82f6'},{n:'Hijau',h:'#22c55e'},{n:'Kuning',h:'#eab308'},{n:'Oranye',h:'#f97316'},{n:'Ungu',h:'#a855f7'},{n:'Pink',h:'#f472b6'},{n:'Cokelat',h:'#78350f'},{n:'Hitam',h:'#000000'}];
+        
+        const animalDB = [
+            {e:'🦖',n:'T-Rex',t:'dino'},{e:'🦕',n:'Brontosaurus',t:'dino'},{e:'🐊',n:'Buaya Purba',t:'dino'},{e:'🦎',n:'Dino Kecil',t:'dino'},{e:'🐉',n:'Naga Hijau',t:'dino'},{e:'🐲',n:'Kepala Naga',t:'dino'},
+            {e:'🐶',n:'Anjing',t:'pet'},{e:'🐱',n:'Kucing',t:'pet'},{e:'🐭',n:'Tikus',t:'pet'},{e:'🐹',n:'Hamster',t:'pet'},{e:'🐰',n:'Kelinci',t:'pet'},{e:'🦊',n:'Rubah',t:'wild'},{e:'🐻',n:'Beruang',t:'wild'},{e:'🐼',n:'Panda',t:'wild'},{e:'🐨',n:'Koala',t:'wild'},{e:'🐯',n:'Harimau',t:'wild'},{e:'🦁',n:'Singa',t:'wild'},{e:'🐮',n:'Sapi',t:'pet'},{e:'🐷',n:'Babi',t:'pet'},{e:'🐸',n:'Katak',t:'wild'},{e:'🐵',n:'Monyet',t:'wild'},{e:'🐔',n:'Ayam',t:'pet'},{e:'🐧',n:'Penguin',t:'wild'},{e:'🐦',n:'Burung Biru',t:'bird'},{e:'🐤',n:'Anak Ayam',t:'pet'},{e:'🐣',n:'Baru Menetas',t:'pet'},{e:'🐥',n:'Burung Kuning',t:'bird'},{e:'🦆',n:'Bebek',t:'pet'},{e:'🦅',n:'Elang',t:'bird'},{e:'🦉',n:'Burung Hantu',t:'bird'},{e:'🦇',n:'Kelelawar',t:'wild'},{e:'🐺',n:'Serigala',t:'wild'},{e:'🐗',n:'Babi Hutan',t:'wild'},{e:'🐴',n:'Kuda',t:'pet'},{e:'🦄',n:'Unicorn',t:'wild'},{e:'🐝',n:'Lebah',t:'bug'},{e:'🐛',n:'Ulat',t:'bug'},{e:'🦋',n:'Kupu-kupu',t:'bug'},{e:'🐌',n:'Siput',t:'bug'},{e:'🐞',n:'Kepik',t:'bug'},{e:'🐜',n:'Semut',t:'bug'},{e:'🦗',n:'Belalang',t:'bug'},{e:'🕷️',n:'Laba-laba',t:'bug'},{e:'🦂',n:'Kalajengking',t:'wild'},{e:'🐢',n:'Kura-kura',t:'wild'},{e:'🐍',n:'Ular',t:'wild'},{e:'🐙',n:'Gurita',t:'sea'},{e:'🦑',n:'Cumi-cumi',t:'sea'},{e:'🦐',n:'Udang',t:'sea'},{e:'🦞',n:'Lobster',t:'sea'},{e:'🦀',n:'Kepiting',t:'sea'},{e:'🐡',n:'Ikan Buntal',t:'sea'},{e:'🐠',n:'Ikan Tropis',t:'sea'},{e:'🐟',n:'Ikan Biru',t:'sea'},{e:'🐬',n:'Lumba-lumba',t:'sea'},{e:'🐳',n:'Paus Biru',t:'sea'},{e:'🐋',n:'Paus Besar',t:'sea'},{e:'鲨',n:'Hiu',t:'sea'},{e:'🦓',n:'Zebra',t:'wild'},{e:'🦒',n:'Jerapah',t:'wild'},{e:'🐘',n:'Gajah',t:'wild'},{e:'🦏',n:'Badak',t:'wild'},{e:'🦛',n:'Kuda Nil',t:'wild'},{e:'🐪',n:'Unta',t:'wild'},{e:'🐑',n:'Domba',t:'pet'},{e:'🐐',n:'Kambing',t:'pet'},{e:'🦌',n:'Rusa',t:'wild'},{e:'🐿️',n:'Tupai',t:'wild'},{e:'🦔',n:'Landak',t:'wild'},{e:'🦢',n:'Angsa',t:'bird'},{e:'🦩',n:'Flamingo',t:'bird'},{e:'🦚',n:'Merak',t:'bird'},{e:'🦘',n:'Kangguru',t:'wild'},{e:'🦥',n:'Sloth',t:'wild'}
+        ];
+
+        // --- LOGIKA VIDEO SEARCH ---
+        async function searchYoutube(query) {
+            if (!query || query.trim() === "") return;
+            vibrateDevice(20);
+            const list = document.getElementById('video-list');
+            list.innerHTML = `<div class="text-rose-500 kids-font p-10">Mencari video ${query}...</div>`;
+            speakRealistic("Mencari video " + query);
+            const safeQuery = encodeURIComponent(query + " anak edukasi kartun");
+            list.innerHTML = `
+                <div class="tv-frame shadow-xl">
+                    <h3 class="kids-font text-white mb-2 text-sm text-center">Video: ${query}</h3>
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed?listType=search&list=${safeQuery}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            `;
+            document.getElementById('yt-search-input').value = '';
+        }
+
+        // --- LOGIKA PUZZLE ---
+        function initPuzzle() {
+            const pool = [...animalDB.slice(0, 15), ...carDB.slice(0, 15)];
+            const target = pool[Math.floor(Math.random() * pool.length)];
+            const targetEl = document.getElementById('puzzle-target');
+            targetEl.innerText = target.e || target.h;
+            targetEl.classList.add('opacity-20', 'grayscale');
+
+            const options = [target];
+            while(options.length < 3) {
+                const rand = pool[Math.floor(Math.random() * pool.length)];
+                if(!options.includes(rand)) options.push(rand);
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            const optGrid = document.getElementById('puzzle-options');
+            optGrid.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "text-5xl p-4 bg-white rounded-2xl shadow-md border-b-4 border-slate-200 active:scale-90 transition-all";
+                btn.innerText = opt.e || opt.h;
+                btn.onclick = () => {
+                    if(opt.e === target.e) {
+                        vibrateDevice(60); // Getar lebih lama untuk jawaban benar
+                        targetEl.classList.remove('opacity-20', 'grayscale');
+                        confetti();
+                        speakRealistic("Hebat! Benar!");
+                        addStar(5);
+                        setTimeout(initPuzzle, 2000);
+                    } else {
+                        vibrateDevice([30, 30, 30]); // Getar pendek 3x untuk salah
+                        speakRealistic("Coba lagi sayang");
+                    }
+                };
+                optGrid.appendChild(btn);
+            });
+        }
+
+        // --- NAVIGASI & INIT ---
+        function showSection(id) {
+            vibrateDevice(30);
             document.getElementById('home-container').classList.add('hidden-section');
             document.getElementById('game-container').classList.remove('hidden-section');
             document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
@@ -366,181 +352,128 @@
             if(id === 'mobil') initCars();
             if(id === 'warna') initColors();
             if(id === 'hewan') initAnimals();
-            if(id === 'cocok') initMatchingGame();
-            if(id === 'video') filterVideos('lagu', document.querySelector('.category-tab'));
+            if(id === 'cocok') initPuzzle();
+            if(id === 'video') initVideos();
         }
 
         function initNumbers() {
-            const grid = document.getElementById('number-grid');
-            grid.innerHTML = '';
-            for(let i = 1; i <= 20; i++) {
-                const btn = document.createElement('button');
-                btn.className = "bg-orange-100 p-4 rounded-xl text-2xl kids-font text-orange-600 border-b-4 border-orange-200 active:translate-y-1";
-                btn.innerText = i;
-                btn.onclick = () => {
+            const grid = document.getElementById('number-grid'); grid.innerHTML = '';
+            for(let i=1; i<=20; i++) {
+                const b = document.createElement('button');
+                b.className = "bg-orange-100 p-4 rounded-xl kids-font text-orange-600 border-b-4 border-orange-200";
+                b.innerText = i;
+                b.onclick = () => {
+                    vibrateDevice(20);
                     document.getElementById('big-number').innerText = i;
-                    const emoji = ['🍎', '⭐️', '🎈', '🍬', '🚗', '🐥', '🍄', '🍪', '🐝', '🎨', '🚀', '🌈', '🍦', '🍩', '🍔', '🍕', '🍉', '🍌', '🍇', '🍒', '🦒'][i-1] || '🍎';
-                    const displayObj = document.getElementById('number-objects');
-                    displayObj.innerHTML = '';
-                    for(let k=0; k<i; k++) {
-                        const s = document.createElement('span'); s.innerText = emoji; displayObj.appendChild(s);
-                    }
-                    speakRealistic(i, 1.2, 1);
-                    addStar(1);
+                    document.getElementById('number-objects').innerHTML = '🍎'.repeat(i);
+                    speakRealistic(i); addStar(1);
                 };
-                grid.appendChild(btn);
+                grid.appendChild(b);
             }
         }
 
         function initLetters() {
-            const grid = document.getElementById('letter-grid');
-            grid.innerHTML = '';
-            alphabets.forEach(item => {
-                const btn = document.createElement('button');
-                btn.className = "bg-blue-100 p-3 rounded-xl text-xl kids-font text-blue-600 border-b-4 border-blue-200 active:translate-y-1";
-                btn.innerText = item.h;
-                btn.onclick = () => {
-                    document.getElementById('letter-big').innerText = item.h;
-                    document.getElementById('letter-word').innerText = item.h + " - " + item.w + " " + item.e;
-                    speakRealistic(item.h + ". " + item.w, 1.2, 1);
-                    addStar(1);
+            const grid = document.getElementById('letter-grid'); grid.innerHTML = '';
+            alphabets.forEach(a => {
+                const b = document.createElement('button');
+                b.className = "bg-blue-100 p-3 rounded-xl kids-font text-blue-600 border-b-4 border-blue-200";
+                b.innerText = a.h;
+                b.onclick = () => {
+                    vibrateDevice(20);
+                    document.getElementById('letter-big').innerText = a.h;
+                    document.getElementById('letter-word').innerText = a.w + " " + a.e;
+                    speakRealistic(a.h + " untuk " + a.w); addStar(1);
                 };
-                grid.appendChild(btn);
+                grid.appendChild(b);
             });
         }
 
         function initCars() {
             const grid = document.getElementById('car-grid');
+            const filter = document.getElementById('car-filter').value;
             grid.innerHTML = '';
-            cars.forEach(car => {
-                const btn = document.createElement('button');
-                btn.className = "p-3 bg-slate-50 rounded-2xl text-4xl shadow-md border-b-4 border-slate-200 active:scale-90 transition-all";
-                btn.innerText = car.e;
-                btn.onclick = () => {
-                    document.getElementById('car-emoji').innerText = car.e;
-                    document.getElementById('car-name').innerText = car.n;
-                    speakRealistic(car.n, 1, 1);
-                    setTimeout(() => speakRealistic(car.s, car.p, car.r), 800);
+            const filtered = filter === 'all' ? carDB : carDB.filter(c => c.t === filter);
+            filtered.forEach(c => {
+                const b = document.createElement('button');
+                b.className = "p-3 bg-white rounded-xl text-4xl shadow car-card border-b-4 border-slate-200";
+                b.innerText = c.e;
+                b.onclick = () => {
+                    vibrateDevice(20);
+                    document.getElementById('car-emoji').innerText = c.e;
+                    document.getElementById('car-name').innerText = c.n;
+                    speakRealistic(c.n);
                     addStar(1);
                 };
-                grid.appendChild(btn);
-            });
-        }
-
-        function initAnimals() {
-            const grid = document.getElementById('animal-grid');
-            grid.innerHTML = '';
-            animals.forEach(a => {
-                const btn = document.createElement('button');
-                btn.className = "p-3 bg-purple-50 rounded-xl text-3xl border-b-4 border-purple-200 active:scale-90";
-                btn.innerText = a.e;
-                btn.onclick = () => {
-                    document.getElementById('animal-emoji').innerText = a.e;
-                    document.getElementById('animal-name').innerText = a.n;
-                    speakRealistic(a.n, 1, 1);
-                    setTimeout(() => speakRealistic(a.s, a.p, a.r), 800);
-                    addStar(1);
-                };
-                grid.appendChild(btn);
+                grid.appendChild(b);
             });
         }
 
         function initColors() {
-            const grid = document.getElementById('color-grid');
-            grid.innerHTML = '';
+            const grid = document.getElementById('color-grid'); grid.innerHTML = '';
             colors.forEach(c => {
-                const btn = document.createElement('button');
-                btn.className = "h-14 rounded-xl shadow-md border-b-4 border-black/10";
-                btn.style.backgroundColor = c.h;
-                btn.onclick = () => {
-                    document.getElementById('color-box').style.backgroundColor = c.h;
-                    document.getElementById('color-name').innerText = c.n;
-                    document.getElementById('color-name').style.color = (c.n === 'Putih' ? '#000' : c.h);
-                    speakRealistic(c.n, 1.2, 1);
+                const b = document.createElement('button'); b.className = "h-14 rounded-xl shadow active:scale-90 transition-all"; b.style.backgroundColor = c.h;
+                b.onclick = () => { 
+                    vibrateDevice(20);
+                    document.getElementById('color-box').style.backgroundColor = c.h; 
+                    document.getElementById('color-name').innerText = c.n; 
+                    speakRealistic(c.n); addStar(1); 
+                };
+                grid.appendChild(b);
+            });
+        }
+
+        function initAnimals() {
+            const grid = document.getElementById('animal-grid'); 
+            const filter = document.getElementById('animal-filter').value;
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? animalDB : animalDB.filter(a => a.t === filter);
+            filtered.forEach(a => {
+                const b = document.createElement('button');
+                b.className = "p-3 bg-white rounded-xl text-4xl shadow animal-card border-b-4 border-slate-100";
+                b.innerText = a.e;
+                b.onclick = () => {
+                    vibrateDevice(20);
+                    document.getElementById('animal-emoji').innerText = a.e;
+                    document.getElementById('animal-name').innerText = a.n;
+                    speakRealistic(a.n);
                     addStar(1);
                 };
-                grid.appendChild(btn);
+                grid.appendChild(b);
             });
         }
 
-        function filterVideos(category, btn) {
-            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-            if(btn) btn.classList.add('active');
-
-            const container = document.getElementById('video-list');
-            container.innerHTML = '';
-            
-            if (videos[category]) {
-                videos[category].forEach(vid => {
-                    const card = document.createElement('div');
-                    card.className = "tv-frame shadow-lg";
-                    card.innerHTML = `
-                        <div class="tv-antenna"></div>
-                        <h3 class="kids-font text-white mb-2 text-center text-sm">${vid.title}</h3>
-                        <div class="video-wrapper">
-                            <iframe src="https://www.youtube.com/embed/${vid.id}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            }
+        function initVideos() {
+            const tabs = document.getElementById('video-tabs'); tabs.innerHTML = '';
+            const videoCats = { 'Lagu': ['m0kL6Yp_3-w'], 'Belajar': ['sqipk9j7AyU'], 'Kartun': ['K5qY7p-oE0U'] };
+            Object.keys(videoCats).forEach((cat, idx) => {
+                const b = document.createElement('button');
+                b.className = `px-6 py-2 rounded-full kids-font text-sm whitespace-nowrap ${idx===0?'bg-rose-500 text-white':'bg-rose-100'}`;
+                b.innerText = cat;
+                b.onclick = () => {
+                    vibrateDevice(20);
+                    document.querySelectorAll('#video-tabs button').forEach(btn => btn.className = 'px-6 py-2 rounded-full kids-font text-sm bg-rose-100');
+                    b.className = 'px-6 py-2 rounded-full kids-font text-sm bg-rose-500 text-white';
+                    renderVideoList(videoCats[cat]);
+                };
+                tabs.appendChild(b);
+            });
+            renderVideoList(videoCats['Lagu']);
         }
 
-        function initMatchingGame() {
-            selectedSource = null;
-            const source = document.getElementById('source-container');
-            const target = document.getElementById('target-container');
-            source.innerHTML = ''; target.innerHTML = '';
-
-            const pool = animals.sort(() => Math.random() - 0.5).slice(0, 4);
-            const items = [...pool].sort(() => Math.random() - 0.5);
-            const targets = [...pool].sort(() => Math.random() - 0.5);
-
-            items.forEach(item => {
-                const el = document.createElement('div');
-                el.className = "text-4xl p-3 bg-white rounded-xl shadow border-2 border-transparent cursor-pointer transition-all";
-                el.innerText = item.e;
-                el.onclick = () => {
-                    selectedSource = item;
-                    speakRealistic("Cari " + item.n, 1.2, 1);
-                    Array.from(source.children).forEach(c => c.style.borderColor = 'transparent');
-                    el.style.borderColor = '#ef4444';
-                    el.style.backgroundColor = '#fef2f2';
-                };
-                source.appendChild(el);
-            });
-
-            targets.forEach(item => {
-                const el = document.createElement('div');
-                el.className = "h-24 flex items-center justify-center bg-gray-100 rounded-2xl border-4 border-dashed border-gray-200 text-4xl grayscale opacity-30 cursor-pointer";
-                el.innerText = item.e;
-                el.onclick = () => {
-                    if (selectedSource && selectedSource.e === item.e) {
-                        el.classList.remove('grayscale', 'opacity-30', 'bg-gray-100');
-                        el.classList.add('bg-green-100', 'border-green-400', 'animate-bounce');
-                        speakRealistic("Yeay! Benar!", 1.5, 1);
-                        addStar(2);
-                        selectedSource = null;
-                        Array.from(source.children).forEach(c => {
-                            if(c.innerText === item.e) c.style.visibility = 'hidden';
-                        });
-                        if (!Array.from(target.children).some(c => c.classList.contains('grayscale'))) {
-                            setTimeout(() => { confetti(); initMatchingGame(); }, 1000);
-                        }
-                    }
-                };
-                target.appendChild(el);
+        function renderVideoList(ids) {
+            const list = document.getElementById('video-list'); list.innerHTML = '';
+            ids.forEach(id => {
+                const d = document.createElement('div'); d.className = "tv-frame";
+                d.innerHTML = `<div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe></div>`;
+                list.appendChild(d);
             });
         }
 
         function goHome() {
+            vibrateDevice(40);
+            window.speechSynthesis.cancel();
             document.getElementById('game-container').classList.add('hidden-section');
             document.getElementById('home-container').classList.remove('hidden-section');
-        }
-
-        // Jalankan cancel suara saat tab ditutup untuk menghindari stuck
-        window.onbeforeunload = () => {
-            window.speechSynthesis.cancel();
         }
     </script>
 </body>
