@@ -34,7 +34,6 @@
             scrollbar-color: #cbd5e1 transparent;
         }
 
-        /* Styling TV Anak Pintar */
         .tv-container {
             background: white;
             border-radius: 2rem;
@@ -139,7 +138,7 @@
     <div id="app-header" class="top-nav hidden-section">
         <button onclick="goHome()" class="bg-white p-2 px-5 rounded-2xl shadow-sm border-b-4 border-slate-200 flex items-center gap-2 active:scale-95 transition-transform">
             <span class="text-2xl">🏠</span>
-            <span class="font-bold text-slate-700 uppercase">Menu Utama</span>
+            <span class="font-bold text-slate-700 uppercase text-xs sm:text-base">Menu Utama</span>
         </button>
         <div class="flex items-center gap-1 bg-white px-4 py-1 rounded-full shadow-inner border border-yellow-100">
             <span class="text-lg">⭐</span>
@@ -204,7 +203,7 @@
     <!-- GAME CONTAINER -->
     <div id="game-container" class="w-full max-w-2xl p-4 hidden-section">
         
-        <!-- SECTION MAKANAN SEHAT (BUAH & SAYUR) -->
+        <!-- SECTION MAKANAN SEHAT -->
         <section id="sehat" class="hidden-section text-center">
             <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-emerald-400">
                 <div class="flex justify-center gap-2 mb-4 bg-emerald-100 p-2 rounded-2xl">
@@ -219,12 +218,12 @@
             </div>
         </section>
 
-        <!-- SECTION TV ANAK PINTAR -->
+        <!-- SECTION TV -->
         <section id="tv" class="hidden-section text-center">
             <div class="tv-container">
                 <h2 class="kids-font text-3xl text-red-500 mb-6">TV Anak Pintar</h2>
                 <div class="search-bar">
-                    <input type="text" id="tv-search-input" placeholder="Cari: Tayo, Lagu..." class="w-full bg-transparent outline-none font-bold text-gray-500">
+                    <input type="text" id="tv-search-input" placeholder="Tulis nama video..." class="w-full bg-transparent outline-none font-bold text-gray-500">
                     <button onclick="handleSearch()" class="btn-cari">CARI</button>
                 </div>
                 <div class="flex justify-center gap-2 mb-4">
@@ -234,11 +233,11 @@
                 </div>
                 <div class="video-box mb-4">
                     <div class="video-inner">
-                        <iframe id="tv-iframe" src="" frameborder="0" allowfullscreen></iframe>
+                        <iframe id="tv-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     </div>
                 </div>
                 <button onclick="refreshCurrentVideo()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-2xl kids-font text-lg shadow-lg border-b-4 border-blue-700 active:translate-y-1 active:border-b-0 transition-all flex items-center justify-center gap-2">
-                    🔄 CARI VIDEO LAIN
+                    🔄 VIDEO LAINNYA
                 </button>
             </div>
         </section>
@@ -271,7 +270,6 @@
                 <div class="flex justify-center gap-2 mb-4 bg-purple-100 p-2 rounded-2xl">
                     <button onclick="filterAnimal('darat')" id="tab-animal-darat" class="px-4 py-2 rounded-xl active font-bold text-xs bg-purple-500 text-white">🦁 Darat</button>
                     <button onclick="filterAnimal('air')" id="tab-animal-air" class="px-4 py-2 rounded-xl font-bold text-xs bg-purple-200 text-purple-700">🐬 Air</button>
-                    <button onclick="filterAnimal('udara')" id="tab-animal-udara" class="px-4 py-2 rounded-xl font-bold text-xs bg-purple-200 text-purple-700">🐦 Udara</button>
                 </div>
                 <div class="bg-purple-50 p-4 rounded-2xl mb-4 min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-purple-200">
                     <div id="animal-emoji" class="text-7xl mb-1 floating">🦁</div>
@@ -284,14 +282,14 @@
         <!-- SECTION KENDARAAN -->
         <section id="mobil" class="hidden-section text-center">
             <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-slate-700">
-                <div class="flex justify-center gap-2 mb-4 bg-slate-200 p-2 rounded-2xl">
-                    <button onclick="filterCar('darat')" id="tab-car-darat" class="px-4 py-2 rounded-xl active font-bold text-xs bg-slate-700 text-white">🚗 Darat</button>
-                    <button onclick="filterCar('air')" id="tab-car-air" class="px-4 py-2 rounded-xl font-bold text-xs bg-slate-300 text-slate-700">🚢 Air</button>
-                    <button onclick="filterCar('udara')" id="tab-car-udara" class="px-4 py-2 rounded-xl font-bold text-xs bg-slate-300 text-slate-700">🚀 Udara</button>
+                <div class="flex justify-center flex-wrap gap-2 mb-4 bg-slate-200 p-2 rounded-2xl">
+                    <button onclick="filterCar('darat')" id="tab-car-darat" class="px-3 py-2 rounded-xl active font-bold text-xs bg-slate-700 text-white">🚗 Darat</button>
+                    <button onclick="filterCar('laut')" id="tab-car-laut" class="px-3 py-2 rounded-xl font-bold text-xs bg-slate-300 text-slate-700">🚢 Laut</button>
+                    <button onclick="filterCar('udara')" id="tab-car-udara" class="px-3 py-2 rounded-xl font-bold text-xs bg-slate-300 text-slate-700">🚀 Udara</button>
                 </div>
                 <div class="bg-slate-100 p-4 rounded-2xl mb-4 min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300">
-                    <div id="car-emoji" class="text-7xl floating mb-1">🏎️</div>
-                    <h3 id="car-name" class="kids-font text-xl text-slate-800 uppercase">Mobil Balap</h3>
+                    <div id="car-emoji" class="text-7xl floating mb-1">🚗</div>
+                    <h3 id="car-name" class="kids-font text-xl text-slate-800 uppercase">Mobil</h3>
                 </div>
                 <div class="grid grid-cols-4 gap-2 grid-scroll" id="car-grid"></div>
             </div>
@@ -323,31 +321,53 @@
         let isAppStarted = false;
         let currentCategory = 'lagu';
 
+        // Video ID YouTube yang lebih stabil dan aktif untuk edukasi anak
         const videoRepo = {
-            lagu: ["S2pE8m9x-bQ", "0V62-FAn9h4", "qB2T8Y6L_2k", "O5_jN22H_Y8", "8h3YV0vP8gA"],
-            belajar: ["jZ_y-m0Bv6E", "Z8vUfCAn8-k", "5XfL3L0R7Y8", "yG-fX6n_Z8k", "W2M7eXpP9g8"],
-            kartun: ["yR0W1rB-klo", "8n4D-fX9L8g", "3W2L7XpY6n8", "kO9L8fX4n2Y", "P9g8M7eXpW2"]
+            lagu: ["S2pE8m9x-bQ", "0V62-FAn9h4", "qB2T8Y6L_2k", "O5_jN22H_Y8", "8h3YV0vP8gA", "q_v_xW6n8m0"],
+            belajar: ["jZ_y-m0Bv6E", "Z8vUfCAn8-k", "5XfL3L0R7Y8", "yG-fX6n_Z8k", "W2M7eXpP9g8", "pT6v_X9nL0k"],
+            kartun: ["yR0W1rB-klo", "8n4D-fX9L8g", "3W2L7XpY6n8", "kO9L8fX4n2Y", "P9g8M7eXpW2", "X8vL0n9Z2m4"]
         };
 
         const foodDB = {
-            buah: [{e:'🍎',n:'Apel'},{e:'🍌',n:'Pisang'},{e:'🍇',n:'Anggur'},{e:'🍓',n:'Stroberi'},{e:'🍊',n:'Jeruk'},{e:'🍉',n:'Semangka'},{e:'🍍',n:'Nanas'},{e:'🥭',n:'Mangga'}],
-            sayur: [{e:'🥦',n:'Brokoli'},{e:'🥕',n:'Wortel'},{e:'🌽',n:'Jagung'},{e:'🍅',n:'Tomat'},{e:'🥬',n:'Sawi'},{e:'🥔',n:'Kentang'},{e:'🥒',n:'Timun'},{e:'🍆',n:'Terong'}]
+            buah: [{e:'🍎',n:'Apel'},{e:'🍌',n:'Pisang'},{e:'🍇',n:'Anggur'},{e:'🍓',n:'Stroberi'},{e:'🍊',n:'Jeruk'},{e:'🍉',n:'Semangka'},{e:'🍍',n:'Nanas'},{e:'🥭',n:'Mangga'},{e:'🍒',n:'Ceri'},{e:'🍐',n:'Pir'},{e:'🥝',n:'Kiwi'},{e:'🍋',n:'Lemon'}],
+            sayur: [{e:'🥦',n:'Brokoli'},{e:'🥕',n:'Wortel'},{e:'🌽',n:'Jagung'},{e:'🍅',n:'Tomat'},{e:'🥬',n:'Sawi'},{e:'🥔',n:'Kentang'},{e:'🥒',n:'Timun'},{e:'🍆',n:'Terong'},{e:'🧅',n:'Bawang'},{e:'🌶️',n:'Cabai'},{e:'🍄',n:'Jamur'}]
         };
 
         const animalDB = {
-            darat: [{e:'🦁',n:'Singa'},{e:'🐘',n:'Gajah'},{e:'🦒',n:'Jerapah'},{e:'🐯',n:'Harimau'},{e:'🦓',n:'Zebra'},{e:'🐒',n:'Monyet'},{e:'🐎',n:'Kuda'},{e:'🐄',n:'Sapi'}],
-            air: [{e:'🐋',n:'Paus'},{e:'🐬',n:'Lumba-lumba'},{e:'🦈',n:'Hiu'},{e:'🐙',n:'Gurita'},{e:'🦀',n:'Kepiting'},{e:'🐠',n:'Ikan'}],
-            udara: [{e:'🦅',n:'Elang'},{e:'🦉',n:'Burung Hantu'},{e:'🦜',n:'Beo'},{e:'🦋',n:'Kupu-kupu'},{e:'🐝',n:'Lebah'},{e:'🦢',n:'Angsa'}]
+            darat: [{e:'🦁',n:'Singa'},{e:'🐘',n:'Gajah'},{e:'🦒',n:'Jerapah'},{e:'🐯',n:'Harimau'},{e:'🦓',n:'Zebra'},{e:'🐒',n:'Monyet'},{e:'🐎',n:'Kuda'},{e:'🐄',n:'Sapi'},{e:'🐕',n:'Anjing'},{e:'🐈',n:'Kucing'},{e:'🐇',n:'Kelinci'},{e:'🐓',n:'Ayam'}],
+            air: [{e:'🐋',n:'Paus'},{e:'🐬',n:'Lumba-lumba'},{e:'🦈',n:'Hiu'},{e:'🐙',n:'Gurita'},{e:'🦀',n:'Kepiting'},{e:'🐠',n:'Ikan'},{e:'🐢',n:'Kura-kura'},{e:'🦐',n:'Udang'}]
         };
 
         const carDB = {
-            darat: [{e:'🚗',n:'Mobil'},{e:'🚌',n:'Bus'},{e:'🚓',n:'Polisi'},{e:'🚑',n:'Ambulans'},{e:'🚒',n:'Pemadam'},{e:'🚚',n:'Truk'},{e:'🚂',n:'Kereta'}],
-            air: [{e:'🚢',n:'Kapal'},{e:'⛵',n:'Perahu'},{e:'🛥️',n:'Speedboat'}],
-            udara: [{e:'✈️',n:'Pesawat'},{e:'🚁',n:'Helikopter'},{e:'🚀',n:'Roket'}]
+            darat: [
+                {e:'🚗',n:'Mobil'},{e:'🚌',n:'Bus'},{e:'🚓',n:'Polisi'},
+                {e:'🚑',n:'Ambulans'},{e:'🚒',n:'Pemadam'},{e:'🚚',n:'Truk'},
+                {e:'🚂',n:'Kereta'},{e:'🛵',n:'Motor'},{e:'🚲',n:'Sepeda'},
+                {e:'🚜',n:'Traktor'},{e:'🚕',n:'Taksi'},{e:'🚛',n:'Truk Besar'}
+            ],
+            laut: [
+                {e:'🚢',n:'Kapal Laut'},{e:'🚤',n:'Speedboat'},{e:'🛥️',n:'Kapal Pesiar'},
+                {e:'🛳️',n:'Kapal Feri'},{e:'🚣',n:'Sampan'},{e:'⛵',n:'Kapal Layar'},
+                {e:'🛶',n:'Kano'},{e:'⚓',n:'Jangkar'}
+            ],
+            udara: [
+                {e:'✈️',n:'Pesawat'},{e:'🚁',n:'Helikopter'},{e:'🚀',n:'Roket'},
+                {e:'🎈',n:'Balon Udara'},{e:'🛰️',n:'Satelit'},{e:'🛩️',n:'Pesawat Kecil'}
+            ]
         };
 
-        const alphabets = [{h:'A',w:'Apel',e:'🍎'},{h:'B',w:'Bola',e:'⚽'},{h:'C',w:'Cicak',e:'🦎'},{h:'D',w:'Donat',e:'🍩'},{h:'E',w:'Eskrim',e:'🍦'},{h:'F',w:'Foto',e:'🖼️'},{h:'G',w:'Gajah',e:'🐘'},{h:'H',w:'Harimau',e:'🐯'},{h:'I',w:'Ikan',e:'🐟'},{h:'J',w:'Jerapah',e:'🦒'},{h:'K',w:'Kucing',e:'🐱'},{h:'L',w:'Lampu',e:'💡'},{h:'M',w:'Mobil',e:'🚗'}];
-        const colors = [{n:'Merah',h:'#ef4444'},{n:'Biru',h:'#3b82f6'},{n:'Hijau',h:'#22c55e'},{n:'Kuning',h:'#eab308'},{n:'Ungu',h:'#a855f7'},{n:'Oren',h:'#f97316'},{n:'Pink',h:'#ec4899'}];
+        // ALFABET LENGKAP A-Z
+        const alphabets = [
+            {h:'A',w:'Apel',e:'🍎'},{h:'B',w:'Bola',e:'⚽'},{h:'C',w:'Cicak',e:'🦎'},{h:'D',w:'Donat',e:'🍩'},
+            {h:'E',w:'Eskrim',e:'🍦'},{h:'F',w:'Foto',e:'🖼️'},{h:'G',w:'Gajah',e:'🐘'},{h:'H',w:'Harimau',e:'🐯'},
+            {h:'I',w:'Ikan',e:'🐟'},{h:'J',w:'Jerapah',e:'🦒'},{h:'K',w:'Kucing',e:'🐱'},{h:'L',w:'Lampu',e:'💡'},
+            {h:'M',w:'Mobil',e:'🚗'},{h:'N',w:'Nanas',e:'🍍'},{h:'O',w:'Obor',e:'🔦'},{h:'P',w:'Pisang',e:'🍌'},
+            {h:'Q',w:'Quran',e:'📖'},{h:'R',w:'Roda',e:'🎡'},{h:'S',w:'Sapi',e:'🐄'},{h:'T',w:'Tomat',e:'🍅'},
+            {h:'U',w:'Ular',e:'🐍'},{h:'V',w:'Vas',e:'🏺'},{h:'W',w:'Wortel',e:'🥕'},{h:'X',w:'Xylophone',e:'🎹'},
+            {h:'Y',w:'Yoyo',e:'🪀'},{h:'Z',w:'Zebra',e:'🦓'}
+        ];
+        
+        const colors = [{n:'Merah',h:'#ef4444'},{n:'Biru',h:'#3b82f6'},{n:'Hijau',h:'#22c55e'},{n:'Kuning',h:'#eab308'},{n:'Ungu',h:'#a855f7'},{n:'Oren',h:'#f97316'},{n:'Pink',h:'#ec4899'},{n:'Cokelat',h:'#78350f'},{n:'Hitam',h:'#000000'},{n:'Putih',h:'#ffffff'}];
 
         function vibrateDevice(ms = 30) { if (navigator.vibrate) navigator.vibrate(ms); }
 
@@ -409,45 +429,50 @@
                 b.classList.remove('active');
                 b.classList.add('inactive');
             });
-            document.getElementById(`tab-v-${cat}`).classList.add('active');
-            document.getElementById(`tab-v-${cat}`).classList.remove('inactive');
+            const activeTab = document.getElementById(`tab-v-${cat}`);
+            if(activeTab) {
+                activeTab.classList.add('active');
+                activeTab.classList.remove('inactive');
+            }
             const videoId = videoRepo[cat][0];
-            document.getElementById('tv-iframe').src = `https://www.youtube.com/embed/${videoId}`;
+            updateVideo(videoId);
+        }
+
+        function updateVideo(id) {
+            const iframe = document.getElementById('tv-iframe');
+            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&rel=0`;
         }
 
         function refreshCurrentVideo() {
             vibrateDevice(50);
             const list = videoRepo[currentCategory];
             const randomId = list[Math.floor(Math.random() * list.length)];
-            const iframe = document.getElementById('tv-iframe');
-            iframe.src = "";
-            setTimeout(() => {
-                iframe.src = `https://www.youtube.com/embed/${randomId}?autoplay=1`;
-                speakRealistic("Mencari video lainnya");
-            }, 100);
+            updateVideo(randomId);
+            speakRealistic("Mencari video lainnya");
         }
 
         function handleSearch() {
             const query = document.getElementById('tv-search-input').value;
             if(!query) return;
-            document.getElementById('tv-iframe').src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}`;
+            const iframe = document.getElementById('tv-iframe');
+            iframe.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query + " lagu anak edukasi")}`;
             speakRealistic("Mencari video " + query);
         }
 
         function filterAnimal(type) {
-            const tabs = ['darat', 'air', 'udara'];
+            const tabs = ['darat', 'air'];
             tabs.forEach(t => {
                 const b = document.getElementById(`tab-animal-${t}`);
-                b.className = "px-4 py-2 rounded-xl font-bold text-xs " + (t === type ? "bg-purple-500 text-white" : "bg-purple-200 text-purple-700");
+                if(b) b.className = "px-4 py-2 rounded-xl font-bold text-xs " + (t === type ? "bg-purple-500 text-white" : "bg-purple-200 text-purple-700");
             });
             initGallery(animalDB[type], 'animal-grid', 'animal-emoji', 'animal-name');
         }
 
         function filterCar(type) {
-            const tabs = ['darat', 'air', 'udara'];
+            const tabs = ['darat', 'laut', 'udara'];
             tabs.forEach(t => {
                 const b = document.getElementById(`tab-car-${t}`);
-                b.className = "px-4 py-2 rounded-xl font-bold text-xs " + (t === type ? "bg-slate-700 text-white" : "bg-slate-300 text-slate-700");
+                if(b) b.className = "px-3 py-2 rounded-xl font-bold text-xs " + (t === type ? "bg-slate-700 text-white" : "bg-slate-300 text-slate-700");
             });
             initGallery(carDB[type], 'car-grid', 'car-emoji', 'car-name');
         }
@@ -486,7 +511,7 @@
             const grid = document.getElementById('letter-grid'); grid.innerHTML = '';
             alphabets.forEach(a => {
                 const b = document.createElement('button');
-                b.className = "bg-blue-100 p-3 rounded-xl kids-font text-blue-600 border-b-4 border-blue-200 active:scale-95";
+                b.className = "bg-blue-100 p-3 rounded-xl kids-font text-blue-600 border-b-4 border-blue-200 active:scale-95 text-xl";
                 b.innerText = a.h;
                 b.onclick = () => {
                     document.getElementById('letter-big').innerText = a.h;
@@ -528,7 +553,7 @@
             optGrid.innerHTML = '';
             options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "text-[10px] font-bold p-3 bg-white rounded-2xl shadow-md border-b-4 border-slate-200 active:scale-90 flex items-center justify-center text-center uppercase h-20 w-20";
+                btn.className = "text-[10px] font-bold p-3 bg-white rounded-2xl shadow-md border-b-4 border-slate-200 active:scale-90 flex items-center justify-center text-center uppercase h-24 w-24";
                 btn.innerText = opt.n || opt.w;
                 btn.onclick = () => {
                     if(opt === target) {
@@ -545,7 +570,7 @@
 
         function goHome() {
             window.speechSynthesis.cancel();
-            document.querySelectorAll('iframe').forEach(f => f.src = "");
+            document.getElementById('tv-iframe').src = "";
             document.getElementById('game-container').classList.add('hidden-section');
             document.getElementById('app-header').classList.add('hidden-section');
             document.getElementById('home-container').classList.remove('hidden-section');
