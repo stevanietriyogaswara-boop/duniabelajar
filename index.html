@@ -27,61 +27,107 @@
         .floating { animation: float 3s ease-in-out infinite; }
         
         .grid-scroll {
-            max-height: 55vh;
+            max-height: 40vh;
             overflow-y: auto;
             padding: 10px;
             scrollbar-width: thin;
             scrollbar-color: #cbd5e1 transparent;
         }
 
-        .tv-frame {
-            background: #334155;
-            padding: 12px;
-            border-radius: 1.5rem;
-            border-bottom: 8px solid #1e293b;
-            position: relative;
+        /* Styling TV Anak Pintar */
+        .tv-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 20px;
+            border: 4px solid #ff7a8a;
+            box-shadow: 0 10px 25px rgba(255, 122, 138, 0.2);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-bar {
+            background: #fff;
+            border: 3px solid #ffdee2;
+            border-radius: 99px;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
             margin-bottom: 15px;
         }
 
-        .video-wrapper {
+        .btn-cari {
+            background: #ff4757;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: -60px;
+            z-index: 10;
+        }
+
+        .video-box {
+            background: #2f3542;
+            border-radius: 1.5rem;
+            padding: 12px;
+            border-bottom: 8px solid #1e272e;
+            position: relative;
+        }
+
+        .video-inner {
             position: relative;
             padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             background: #000;
         }
-        .video-wrapper iframe {
+
+        .video-inner iframe {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
         }
 
-        #start-overlay {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-        }
-
-        .animal-card, .car-card {
+        .tab-video {
+            padding: 8px 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
             transition: all 0.2s;
         }
-        .animal-card:active, .car-card:active {
-            transform: scale(0.9);
-            background-color: #f3e8ff;
+
+        .tab-video.active {
+            background: #ff4757;
+            color: white;
         }
 
-        .grid-scroll::-webkit-scrollbar {
-            width: 6px;
+        .tab-video.inactive {
+            background: #ffe0e3;
+            color: #ff4757;
         }
-        .grid-scroll::-webkit-scrollbar-thumb {
-            background-color: #ddd;
-            border-radius: 10px;
+
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(240, 249, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 10px 15px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #e0f2fe;
         }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-4 relative text-slate-800">
+<body class="min-h-screen flex flex-col items-center relative text-slate-800">
 
     <!-- LAYAR MULAI -->
-    <div id="start-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center text-white">
+    <div id="start-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center text-white bg-gradient-to-br from-blue-500 to-purple-600">
         <div class="text-9xl mb-4 floating">🌟</div>
         <h1 class="kids-font text-5xl mb-8 text-center px-4 drop-shadow-lg text-yellow-300">Dunia Belajar</h1>
         <button onclick="startApp()" class="bg-yellow-400 text-blue-900 px-10 py-5 rounded-full kids-font text-3xl shadow-xl border-b-8 border-yellow-600 active:translate-y-2 active:border-b-0 transition-all">
@@ -89,9 +135,21 @@
         </button>
     </div>
 
+    <!-- HEADER NAVIGATION -->
+    <div id="app-header" class="top-nav hidden-section">
+        <button onclick="goHome()" class="bg-white p-2 px-5 rounded-2xl shadow-sm border-b-4 border-slate-200 flex items-center gap-2 active:scale-95 transition-transform">
+            <span class="text-2xl">🏠</span>
+            <span class="font-bold text-slate-700 uppercase">Menu Utama</span>
+        </button>
+        <div class="flex items-center gap-1 bg-white px-4 py-1 rounded-full shadow-inner border border-yellow-100">
+            <span class="text-lg">⭐</span>
+            <span id="total-stars-header" class="kids-font text-orange-500 text-xl">0</span>
+        </div>
+    </div>
+
     <!-- BERANDA UTAMA -->
-    <div id="home-container" class="w-full max-w-2xl flex flex-col items-center hidden-section">
-        <div class="w-full bg-white rounded-3xl p-4 shadow-md mb-6 flex flex-col items-center border-b-4 border-blue-100">
+    <div id="home-container" class="w-full max-w-2xl flex flex-col items-center p-4 hidden-section mt-2 overflow-y-auto no-scrollbar" style="max-height: 95vh;">
+        <div class="w-full bg-white rounded-3xl p-4 shadow-md mb-4 flex flex-col items-center border-b-4 border-blue-100">
             <div class="flex justify-between w-full items-center mb-2 px-2">
                 <div class="flex items-center gap-2">
                     <span class="text-3xl">🏆</span>
@@ -107,138 +165,197 @@
             </div>
         </div>
 
-        <main class="grid grid-cols-2 gap-4 w-full px-2 overflow-y-auto pb-10">
-            <button onclick="showSection('angka')" class="bg-orange-400 p-6 rounded-3xl shadow-lg border-b-8 border-orange-600 text-white card-bounce flex flex-col items-center">
+        <main class="grid grid-cols-2 gap-4 w-full px-2 pb-24">
+            <button onclick="showSection('angka')" class="bg-orange-400 p-5 rounded-3xl shadow-lg border-b-8 border-orange-600 text-white card-bounce flex flex-col items-center">
                 <div class="text-5xl mb-2">🔢</div>
-                <div class="kids-font text-xl">Angka</div>
+                <div class="kids-font text-lg leading-tight">ANGKA</div>
             </button>
-            <button onclick="showSection('huruf')" class="bg-blue-400 p-6 rounded-3xl shadow-lg border-b-8 border-blue-600 text-white card-bounce flex flex-col items-center">
+            <button onclick="showSection('huruf')" class="bg-blue-400 p-5 rounded-3xl shadow-lg border-b-8 border-blue-600 text-white card-bounce flex flex-col items-center">
                 <div class="text-5xl mb-2">🔤</div>
-                <div class="kids-font text-xl">Huruf</div>
+                <div class="kids-font text-lg leading-tight">HURUF</div>
             </button>
-            <button onclick="showSection('warna')" class="bg-green-400 p-6 rounded-3xl shadow-lg border-b-8 border-green-600 text-white card-bounce flex flex-col items-center">
+            <button onclick="showSection('warna')" class="bg-green-400 p-5 rounded-3xl shadow-lg border-b-8 border-green-600 text-white card-bounce flex flex-col items-center">
                 <div class="text-5xl mb-2">🎨</div>
-                <div class="kids-font text-xl">Warna</div>
+                <div class="kids-font text-lg leading-tight">WARNA</div>
             </button>
-            <button onclick="showSection('hewan')" class="bg-purple-400 p-6 rounded-3xl shadow-lg border-b-8 border-purple-600 text-white card-bounce flex flex-col items-center">
+            <button onclick="showSection('hewan')" class="bg-purple-400 p-5 rounded-3xl shadow-lg border-b-8 border-purple-600 text-white card-bounce flex flex-col items-center">
                 <div class="text-5xl mb-2">🦁</div>
-                <div class="kids-font text-xl">Hewan</div>
+                <div class="kids-font text-lg leading-tight text-center">DUNIA HEWAN</div>
             </button>
-            <button onclick="showSection('mobil')" class="bg-slate-700 p-6 rounded-3xl shadow-lg border-b-8 border-slate-900 text-white card-bounce flex flex-col items-center col-span-2">
-                <div class="text-5xl mb-2">🏎️</div>
-                <div class="kids-font text-xl">Kendaraan</div>
+            <button onclick="showSection('sehat')" class="bg-emerald-500 p-5 rounded-3xl shadow-lg border-b-8 border-emerald-700 text-white card-bounce flex flex-col items-center">
+                <div class="text-5xl mb-2">🍎</div>
+                <div class="kids-font text-lg leading-tight text-center">MAKANAN SEHAT</div>
             </button>
-            <button onclick="showSection('cocok')" class="bg-red-400 p-4 rounded-3xl shadow-lg border-b-8 border-red-600 text-white card-bounce flex flex-col items-center">
-                <div class="text-4xl mb-2">🧩</div>
-                <div class="kids-font text-lg">Cocokkan</div>
+            <button onclick="showSection('mobil')" class="bg-slate-700 p-5 rounded-3xl shadow-lg border-b-8 border-slate-900 text-white card-bounce flex flex-col items-center">
+                <div class="text-5xl mb-2">🚢</div>
+                <div class="kids-font text-lg leading-tight text-center">KENDARAAN</div>
             </button>
-            <button onclick="showSection('video')" class="bg-rose-500 p-4 rounded-3xl shadow-lg border-b-8 border-rose-700 text-white card-bounce flex flex-col items-center">
-                <div class="text-4xl mb-2">📺</div>
-                <div class="kids-font text-lg">Video TV</div>
+            <button onclick="showSection('tv')" class="bg-red-400 p-5 rounded-3xl shadow-lg border-b-8 border-red-600 text-white card-bounce flex flex-col items-center">
+                <div class="text-5xl mb-2">📺</div>
+                <div class="kids-font text-lg leading-tight uppercase">VIDEO TV</div>
+            </button>
+            <button onclick="showSection('cocok')" class="bg-yellow-500 p-5 rounded-3xl shadow-lg border-b-8 border-yellow-700 text-white card-bounce flex flex-col items-center">
+                <div class="text-5xl mb-2">🧩</div>
+                <div class="kids-font text-lg uppercase">Uji Pintar</div>
             </button>
         </main>
     </div>
 
     <!-- GAME CONTAINER -->
-    <div id="game-container" class="w-full max-w-2xl hidden-section">
+    <div id="game-container" class="w-full max-w-2xl p-4 hidden-section">
         
-        <section id="angka" class="hidden-section text-center"><div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-orange-400"><h2 class="kids-font text-3xl text-orange-500 mb-4">Kenal Angka</h2><div class="bg-orange-50 p-6 rounded-2xl mb-6 min-h-[200px] flex flex-col items-center justify-center border-2 border-dashed border-orange-200"><div id="big-number" class="text-9xl kids-font text-orange-500 floating">1</div><div id="number-objects" class="text-4xl mt-4 flex flex-wrap justify-center gap-2"></div></div><div class="grid grid-cols-5 gap-2 grid-scroll" id="number-grid"></div></div></section>
-        
-        <section id="huruf" class="hidden-section text-center"><div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-blue-400"><h2 class="kids-font text-3xl text-blue-500 mb-4">Kenal Huruf</h2><div class="bg-blue-50 p-6 rounded-2xl mb-6 min-h-[200px] flex flex-col items-center justify-center border-2 border-dashed border-blue-200"><div id="letter-big" class="text-9xl kids-font text-blue-600 floating">A</div><p id="letter-word" class="text-2xl font-bold text-gray-700 mt-2 uppercase"></p></div><div class="grid grid-cols-6 gap-2 grid-scroll" id="letter-grid"></div></div></section>
-
-        <section id="mobil" class="hidden-section text-center">
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-slate-700">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="kids-font text-2xl text-slate-700">Garasi Kendaraan</h2>
-                    <select id="car-filter" onchange="initCars(); vibrateDevice(20);" class="bg-slate-100 p-2 rounded-xl kids-font text-sm text-slate-700 outline-none border-2 border-slate-200">
-                        <option value="all">Semua</option>
-                        <option value="city">Kota 🚗</option>
-                        <option value="emergency">Darurat 🚑</option>
-                        <option value="work">Kerja 🚜</option>
-                        <option value="air">Udara 🚀</option>
-                        <option value="water">Air 🚢</option>
-                        <option value="rail">Rel 🚂</option>
-                    </select>
+        <!-- SECTION MAKANAN SEHAT (BUAH & SAYUR) -->
+        <section id="sehat" class="hidden-section text-center">
+            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-emerald-400">
+                <div class="flex justify-center gap-2 mb-4 bg-emerald-100 p-2 rounded-2xl">
+                    <button onclick="filterFood('buah')" id="tab-food-buah" class="px-4 py-2 rounded-xl active font-bold text-xs bg-emerald-500 text-white">🍎 Buah</button>
+                    <button onclick="filterFood('sayur')" id="tab-food-sayur" class="px-4 py-2 rounded-xl font-bold text-xs bg-emerald-200 text-emerald-700">🥦 Sayur</button>
                 </div>
-                <div class="bg-slate-100 p-8 rounded-2xl mb-4 min-h-[200px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300">
-                    <div id="car-emoji" class="text-9xl floating mb-4">🏎️</div>
-                    <h3 id="car-name" class="kids-font text-3xl text-slate-800 uppercase">Mobil Balap</h3>
+                <div class="bg-emerald-50 p-4 rounded-2xl mb-4 min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-emerald-200">
+                    <div id="food-emoji" class="text-7xl mb-1 floating">🍎</div>
+                    <h3 id="food-name" class="kids-font text-xl text-emerald-800 uppercase">Apel</h3>
                 </div>
-                <div class="grid grid-cols-4 sm:grid-cols-5 gap-3 grid-scroll" id="car-grid"></div>
+                <div class="grid grid-cols-4 gap-2 grid-scroll" id="food-grid"></div>
             </div>
         </section>
 
-        <section id="warna" class="hidden-section text-center"><div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-green-400"><h2 class="kids-font text-3xl text-green-500 mb-4">Warna</h2><div id="color-box" class="w-full h-32 rounded-2xl mb-4 shadow-inner border-4 border-gray-100"></div><h3 id="color-name" class="kids-font text-3xl mb-4 uppercase">Merah</h3><div class="grid grid-cols-3 gap-2 grid-scroll" id="color-grid"></div></div></section>
+        <!-- SECTION TV ANAK PINTAR -->
+        <section id="tv" class="hidden-section text-center">
+            <div class="tv-container">
+                <h2 class="kids-font text-3xl text-red-500 mb-6">TV Anak Pintar</h2>
+                <div class="search-bar">
+                    <input type="text" id="tv-search-input" placeholder="Cari: Tayo, Lagu..." class="w-full bg-transparent outline-none font-bold text-gray-500">
+                    <button onclick="handleSearch()" class="btn-cari">CARI</button>
+                </div>
+                <div class="flex justify-center gap-2 mb-4">
+                    <button onclick="setTvCategory('lagu')" id="tab-v-lagu" class="tab-video active">Lagu</button>
+                    <button onclick="setTvCategory('belajar')" id="tab-v-belajar" class="tab-video inactive">Belajar</button>
+                    <button onclick="setTvCategory('kartun')" id="tab-v-kartun" class="tab-video inactive">Kartun</button>
+                </div>
+                <div class="video-box mb-4">
+                    <div class="video-inner">
+                        <iframe id="tv-iframe" src="" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <button onclick="refreshCurrentVideo()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-4 rounded-2xl kids-font text-lg shadow-lg border-b-4 border-blue-700 active:translate-y-1 active:border-b-0 transition-all flex items-center justify-center gap-2">
+                    🔄 CARI VIDEO LAIN
+                </button>
+            </div>
+        </section>
 
+        <!-- SECTION ANGKA -->
+        <section id="angka" class="hidden-section text-center">
+            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-orange-400">
+                <div class="bg-orange-50 p-4 rounded-2xl mb-4 min-h-[150px] flex flex-col items-center justify-center border-2 border-dashed border-orange-200">
+                    <div id="big-number" class="text-8xl kids-font text-orange-500 floating">1</div>
+                    <div id="number-objects" class="text-3xl mt-2 flex flex-wrap justify-center gap-1">🍎</div>
+                </div>
+                <div class="grid grid-cols-5 gap-2 grid-scroll" id="number-grid"></div>
+            </div>
+        </section>
+        
+        <!-- SECTION HURUF -->
+        <section id="huruf" class="hidden-section text-center">
+            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-blue-400">
+                <div class="bg-blue-50 p-4 rounded-2xl mb-4 min-h-[150px] flex flex-col items-center justify-center border-2 border-dashed border-blue-200">
+                    <div id="letter-big" class="text-8xl kids-font text-blue-600 floating">A</div>
+                    <p id="letter-word" class="text-xl font-bold text-gray-700 mt-2 uppercase">APEL 🍎</p>
+                </div>
+                <div class="grid grid-cols-6 gap-2 grid-scroll" id="letter-grid"></div>
+            </div>
+        </section>
+
+        <!-- SECTION HEWAN -->
         <section id="hewan" class="hidden-section text-center">
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-purple-400">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="kids-font text-2xl text-purple-600">Dunia Hewan</h2>
-                    <select id="animal-filter" onchange="initAnimals(); vibrateDevice(20);" class="bg-purple-100 p-2 rounded-xl kids-font text-sm text-purple-700 outline-none border-2 border-purple-200">
-                        <option value="all">Semua (100+)</option>
-                        <option value="dino">Dinosaurus 🦖</option>
-                        <option value="pet">Peliharaan 🐶</option>
-                        <option value="wild">Hutan 🦁</option>
-                        <option value="sea">Laut 🐬</option>
-                        <option value="bird">Burung 🐦</option>
-                        <option value="bug">Serangga 🐞</option>
-                    </select>
+            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-purple-400">
+                <div class="flex justify-center gap-2 mb-4 bg-purple-100 p-2 rounded-2xl">
+                    <button onclick="filterAnimal('darat')" id="tab-animal-darat" class="px-4 py-2 rounded-xl active font-bold text-xs bg-purple-500 text-white">🦁 Darat</button>
+                    <button onclick="filterAnimal('air')" id="tab-animal-air" class="px-4 py-2 rounded-xl font-bold text-xs bg-purple-200 text-purple-700">🐬 Air</button>
+                    <button onclick="filterAnimal('udara')" id="tab-animal-udara" class="px-4 py-2 rounded-xl font-bold text-xs bg-purple-200 text-purple-700">🐦 Udara</button>
                 </div>
-                <div class="bg-purple-50 p-6 rounded-2xl mb-4 min-h-[180px] flex flex-col items-center justify-center relative">
-                    <div id="animal-emoji" class="text-9xl mb-2 floating">🦁</div>
-                    <h3 id="animal-name" class="kids-font text-2xl text-gray-700 uppercase">Singa</h3>
+                <div class="bg-purple-50 p-4 rounded-2xl mb-4 min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-purple-200">
+                    <div id="animal-emoji" class="text-7xl mb-1 floating">🦁</div>
+                    <h3 id="animal-name" class="kids-font text-xl text-purple-800 uppercase">Singa</h3>
                 </div>
-                <div class="grid grid-cols-4 sm:grid-cols-5 gap-2 grid-scroll" id="animal-grid"></div>
+                <div class="grid grid-cols-4 gap-2 grid-scroll" id="animal-grid"></div>
             </div>
         </section>
 
+        <!-- SECTION KENDARAAN -->
+        <section id="mobil" class="hidden-section text-center">
+            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-slate-700">
+                <div class="flex justify-center gap-2 mb-4 bg-slate-200 p-2 rounded-2xl">
+                    <button onclick="filterCar('darat')" id="tab-car-darat" class="px-4 py-2 rounded-xl active font-bold text-xs bg-slate-700 text-white">🚗 Darat</button>
+                    <button onclick="filterCar('air')" id="tab-car-air" class="px-4 py-2 rounded-xl font-bold text-xs bg-slate-300 text-slate-700">🚢 Air</button>
+                    <button onclick="filterCar('udara')" id="tab-car-udara" class="px-4 py-2 rounded-xl font-bold text-xs bg-slate-300 text-slate-700">🚀 Udara</button>
+                </div>
+                <div class="bg-slate-100 p-4 rounded-2xl mb-4 min-h-[140px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300">
+                    <div id="car-emoji" class="text-7xl floating mb-1">🏎️</div>
+                    <h3 id="car-name" class="kids-font text-xl text-slate-800 uppercase">Mobil Balap</h3>
+                </div>
+                <div class="grid grid-cols-4 gap-2 grid-scroll" id="car-grid"></div>
+            </div>
+        </section>
+
+        <!-- SECTION WARNA -->
+        <section id="warna" class="hidden-section text-center">
+            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-green-400">
+                <div id="color-box" class="w-full h-32 rounded-2xl mb-4 shadow-inner border-4 border-gray-100"></div>
+                <h3 id="color-name" class="kids-font text-2xl mb-4 uppercase">Merah</h3>
+                <div class="grid grid-cols-4 gap-2 grid-scroll" id="color-grid"></div>
+            </div>
+        </section>
+
+        <!-- SECTION COCOK -->
         <section id="cocok" class="hidden-section text-center">
-            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-red-400">
-                <h2 class="kids-font text-3xl text-red-500 mb-4">Tebak Bayangan</h2>
-                <div class="flex flex-col items-center gap-8 py-4">
-                    <div id="puzzle-target" class="text-9xl opacity-20 grayscale filter bg-slate-100 p-8 rounded-full border-4 border-red-100">❓</div>
-                    <div class="kids-font text-xl text-slate-500">Pilih yang mana ya?</div>
-                    <div class="grid grid-cols-3 gap-4" id="puzzle-options"></div>
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-yellow-500">
+                <h2 class="kids-font text-2xl text-yellow-600 mb-2">Uji Pintar</h2>
+                <div class="flex flex-col items-center gap-6 py-4">
+                    <div id="puzzle-target" class="text-8xl opacity-20 grayscale filter bg-slate-100 p-8 rounded-full border-4 border-yellow-100 shadow-inner">❓</div>
+                    <div class="grid grid-cols-3 gap-3" id="puzzle-options"></div>
                 </div>
             </div>
         </section>
-
-        <section id="video" class="hidden-section text-center">
-            <div class="bg-white p-4 rounded-3xl shadow-xl border-4 border-rose-400">
-                <h2 class="kids-font text-2xl text-rose-500 mb-4">TV Anak Pintar</h2>
-                <div class="mb-4 flex gap-2">
-                    <input type="text" id="yt-search-input" placeholder="Cari: tayo, kereta, lagu..." class="w-full p-3 rounded-full border-4 border-rose-200 text-center kids-font text-slate-600 outline-none focus:border-rose-400 shadow-inner">
-                    <button onclick="searchYoutube(document.getElementById('yt-search-input').value)" class="bg-rose-500 text-white px-6 rounded-full kids-font active:scale-95 shadow-md">CARI</button>
-                </div>
-                <div class="flex gap-2 overflow-x-auto mb-4 pb-2 no-scrollbar" id="video-tabs"></div>
-                <div class="grid-scroll space-y-4" id="video-list"></div>
-            </div>
-        </section>
-
-        <div class="w-full flex justify-center mt-6 mb-10">
-            <button onclick="goHome()" class="bg-gray-800 text-white px-10 py-4 rounded-full font-bold shadow-lg flex items-center gap-2 text-lg">
-                🏠 Beranda
-            </button>
-        </div>
     </div>
 
     <script>
         let stars = 0;
         let isAppStarted = false;
+        let currentCategory = 'lagu';
 
-        // Fungsi Getar (Haptic Feedback)
-        function vibrateDevice(ms = 30) {
-            if (navigator.vibrate) {
-                navigator.vibrate(ms);
-            }
-        }
+        const videoRepo = {
+            lagu: ["S2pE8m9x-bQ", "0V62-FAn9h4", "qB2T8Y6L_2k", "O5_jN22H_Y8", "8h3YV0vP8gA"],
+            belajar: ["jZ_y-m0Bv6E", "Z8vUfCAn8-k", "5XfL3L0R7Y8", "yG-fX6n_Z8k", "W2M7eXpP9g8"],
+            kartun: ["yR0W1rB-klo", "8n4D-fX9L8g", "3W2L7XpY6n8", "kO9L8fX4n2Y", "P9g8M7eXpW2"]
+        };
+
+        const foodDB = {
+            buah: [{e:'🍎',n:'Apel'},{e:'🍌',n:'Pisang'},{e:'🍇',n:'Anggur'},{e:'🍓',n:'Stroberi'},{e:'🍊',n:'Jeruk'},{e:'🍉',n:'Semangka'},{e:'🍍',n:'Nanas'},{e:'🥭',n:'Mangga'}],
+            sayur: [{e:'🥦',n:'Brokoli'},{e:'🥕',n:'Wortel'},{e:'🌽',n:'Jagung'},{e:'🍅',n:'Tomat'},{e:'🥬',n:'Sawi'},{e:'🥔',n:'Kentang'},{e:'🥒',n:'Timun'},{e:'🍆',n:'Terong'}]
+        };
+
+        const animalDB = {
+            darat: [{e:'🦁',n:'Singa'},{e:'🐘',n:'Gajah'},{e:'🦒',n:'Jerapah'},{e:'🐯',n:'Harimau'},{e:'🦓',n:'Zebra'},{e:'🐒',n:'Monyet'},{e:'🐎',n:'Kuda'},{e:'🐄',n:'Sapi'}],
+            air: [{e:'🐋',n:'Paus'},{e:'🐬',n:'Lumba-lumba'},{e:'🦈',n:'Hiu'},{e:'🐙',n:'Gurita'},{e:'🦀',n:'Kepiting'},{e:'🐠',n:'Ikan'}],
+            udara: [{e:'🦅',n:'Elang'},{e:'🦉',n:'Burung Hantu'},{e:'🦜',n:'Beo'},{e:'🦋',n:'Kupu-kupu'},{e:'🐝',n:'Lebah'},{e:'🦢',n:'Angsa'}]
+        };
+
+        const carDB = {
+            darat: [{e:'🚗',n:'Mobil'},{e:'🚌',n:'Bus'},{e:'🚓',n:'Polisi'},{e:'🚑',n:'Ambulans'},{e:'🚒',n:'Pemadam'},{e:'🚚',n:'Truk'},{e:'🚂',n:'Kereta'}],
+            air: [{e:'🚢',n:'Kapal'},{e:'⛵',n:'Perahu'},{e:'🛥️',n:'Speedboat'}],
+            udara: [{e:'✈️',n:'Pesawat'},{e:'🚁',n:'Helikopter'},{e:'🚀',n:'Roket'}]
+        };
+
+        const alphabets = [{h:'A',w:'Apel',e:'🍎'},{h:'B',w:'Bola',e:'⚽'},{h:'C',w:'Cicak',e:'🦎'},{h:'D',w:'Donat',e:'🍩'},{h:'E',w:'Eskrim',e:'🍦'},{h:'F',w:'Foto',e:'🖼️'},{h:'G',w:'Gajah',e:'🐘'},{h:'H',w:'Harimau',e:'🐯'},{h:'I',w:'Ikan',e:'🐟'},{h:'J',w:'Jerapah',e:'🦒'},{h:'K',w:'Kucing',e:'🐱'},{h:'L',w:'Lampu',e:'💡'},{h:'M',w:'Mobil',e:'🚗'}];
+        const colors = [{n:'Merah',h:'#ef4444'},{n:'Biru',h:'#3b82f6'},{n:'Hijau',h:'#22c55e'},{n:'Kuning',h:'#eab308'},{n:'Ungu',h:'#a855f7'},{n:'Oren',h:'#f97316'},{n:'Pink',h:'#ec4899'}];
+
+        function vibrateDevice(ms = 30) { if (navigator.vibrate) navigator.vibrate(ms); }
 
         function startApp() {
             isAppStarted = true;
-            vibrateDevice(50);
             document.getElementById('start-overlay').classList.add('hidden-section');
             document.getElementById('home-container').classList.remove('hidden-section');
-            speakRealistic("Ayo belajar bersama!");
+            speakRealistic("Halo sayang, ayo belajar dan bermain!");
         }
 
         function speakRealistic(text) {
@@ -246,7 +363,7 @@
             window.speechSynthesis.cancel();
             const msg = new SpeechSynthesisUtterance(text);
             msg.lang = 'id-ID';
-            msg.pitch = 1.2;
+            msg.pitch = 1.2; 
             msg.rate = 1;
             window.speechSynthesis.speak(msg);
         }
@@ -254,56 +371,147 @@
         function addStar(amount = 1) {
             stars += amount;
             document.getElementById('total-stars').innerText = stars;
-            document.getElementById('level-badge').innerText = "Level " + (Math.floor(stars/20) + 1);
-            document.getElementById('progress-bar').style.width = ((stars % 20) * 5) + "%";
-            if (stars > 0 && stars % 20 === 0) {
-                confetti();
-                vibrateDevice([100, 50, 100]); // Getar pola untuk naik level
-                speakRealistic("Luar biasa! Kamu naik level!");
+            document.getElementById('total-stars-header').innerText = stars;
+            document.getElementById('level-badge').innerText = "Level " + (Math.floor(stars/30) + 1);
+            document.getElementById('progress-bar').style.width = ((stars % 30) * 3.33) + "%";
+        }
+
+        function showSection(id) {
+            vibrateDevice(30);
+            document.getElementById('home-container').classList.add('hidden-section');
+            document.getElementById('app-header').classList.remove('hidden-section');
+            document.getElementById('game-container').classList.remove('hidden-section');
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
+            document.getElementById(id).classList.remove('hidden-section');
+            
+            if(id === 'tv') setTvCategory('lagu');
+            if(id === 'sehat') filterFood('buah');
+            if(id === 'angka') initNumbers(); 
+            if(id === 'huruf') initLetters(); 
+            if(id === 'hewan') filterAnimal('darat');
+            if(id === 'mobil') filterCar('darat');
+            if(id === 'warna') initColors();
+            if(id === 'cocok') initPuzzle();
+        }
+
+        function filterFood(type) {
+            const tabs = ['buah', 'sayur'];
+            tabs.forEach(t => {
+                const b = document.getElementById(`tab-food-${t}`);
+                b.className = "px-4 py-2 rounded-xl font-bold text-xs " + (t === type ? "bg-emerald-500 text-white" : "bg-emerald-200 text-emerald-700");
+            });
+            initGallery(foodDB[type], 'food-grid', 'food-emoji', 'food-name');
+        }
+
+        function setTvCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.tab-video').forEach(b => {
+                b.classList.remove('active');
+                b.classList.add('inactive');
+            });
+            document.getElementById(`tab-v-${cat}`).classList.add('active');
+            document.getElementById(`tab-v-${cat}`).classList.remove('inactive');
+            const videoId = videoRepo[cat][0];
+            document.getElementById('tv-iframe').src = `https://www.youtube.com/embed/${videoId}`;
+        }
+
+        function refreshCurrentVideo() {
+            vibrateDevice(50);
+            const list = videoRepo[currentCategory];
+            const randomId = list[Math.floor(Math.random() * list.length)];
+            const iframe = document.getElementById('tv-iframe');
+            iframe.src = "";
+            setTimeout(() => {
+                iframe.src = `https://www.youtube.com/embed/${randomId}?autoplay=1`;
+                speakRealistic("Mencari video lainnya");
+            }, 100);
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('tv-search-input').value;
+            if(!query) return;
+            document.getElementById('tv-iframe').src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}`;
+            speakRealistic("Mencari video " + query);
+        }
+
+        function filterAnimal(type) {
+            const tabs = ['darat', 'air', 'udara'];
+            tabs.forEach(t => {
+                const b = document.getElementById(`tab-animal-${t}`);
+                b.className = "px-4 py-2 rounded-xl font-bold text-xs " + (t === type ? "bg-purple-500 text-white" : "bg-purple-200 text-purple-700");
+            });
+            initGallery(animalDB[type], 'animal-grid', 'animal-emoji', 'animal-name');
+        }
+
+        function filterCar(type) {
+            const tabs = ['darat', 'air', 'udara'];
+            tabs.forEach(t => {
+                const b = document.getElementById(`tab-car-${t}`);
+                b.className = "px-4 py-2 rounded-xl font-bold text-xs " + (t === type ? "bg-slate-700 text-white" : "bg-slate-300 text-slate-700");
+            });
+            initGallery(carDB[type], 'car-grid', 'car-emoji', 'car-name');
+        }
+
+        function initGallery(db, gridId, emojiId, nameId) {
+            const grid = document.getElementById(gridId); grid.innerHTML = '';
+            db.forEach(item => {
+                const b = document.createElement('button');
+                b.className = `p-3 bg-white rounded-xl text-4xl shadow border-b-4 border-slate-100 active:scale-95 flex items-center justify-center`;
+                b.innerText = item.e;
+                b.onclick = () => {
+                    document.getElementById(emojiId).innerText = item.e;
+                    document.getElementById(nameId).innerText = item.n;
+                    speakRealistic(item.n); addStar(1);
+                };
+                grid.appendChild(b);
+            });
+        }
+
+        function initNumbers() {
+            const grid = document.getElementById('number-grid'); grid.innerHTML = '';
+            for(let i=1; i<=20; i++) {
+                const b = document.createElement('button');
+                b.className = "bg-orange-100 p-4 rounded-xl kids-font text-orange-600 border-b-4 border-orange-200 active:scale-95";
+                b.innerText = i;
+                b.onclick = () => {
+                    document.getElementById('big-number').innerText = i;
+                    document.getElementById('number-objects').innerHTML = '🍎'.repeat(i);
+                    speakRealistic(i); addStar(1);
+                };
+                grid.appendChild(b);
             }
         }
 
-        // --- DATABASE ---
-        const alphabets = [{h:'A',w:'Apel',e:'🍎'},{h:'B',w:'Bola',e:'⚽'},{h:'C',w:'Cicak',e:'🦎'},{h:'D',w:'Donat',e:'🍩'},{h:'E',w:'Eskrim',e:'🍦'},{h:'F',w:'Foto',e:'🖼️'},{h:'G',w:'Gajah',e:'🐘'},{h:'H',w:'Harimau',e:'🐯'},{h:'I',w:'Ikan',e:'🐟'},{h:'J',w:'Jerapah',e:'🦒'},{h:'K',w:'Kucing',e:'🐱'},{h:'L',w:'Lampu',e:'💡'},{h:'M',w:'Mobil',e:'🚗'},{h:'N',w:'Nanas',e:'🍍'},{h:'O',w:'Obat',e:'💊'},{h:'P',w:'Pisang',e:'🍌'},{h:'Q',w:'Quran',e:'📖'},{h:'R',w:'Roti',e:'🍞'},{h:'S',w:'Sapi',e:'🐮'},{h:'T',w:'Topi',e:'👒'},{h:'U',w:'Ular',e:'🐍'},{h:'V',w:'Vas',e:'🏺'},{h:'W',w:'Wortel',e:'🥕'},{h:'X',w:'Xylophone',e:'🎹'},{h:'Y',w:'Yoyo',e:'🪀'},{h:'Z',w:'Zebra',e:'🦓'}];
-        
-        const carDB = [
-            {e:'🚗',n:'Mobil Merah',t:'city'},{e:'🚕',n:'Taksi',t:'city'},{e:'🚙',n:'Mobil Biru',t:'city'},{e:'🚌',n:'Bus Sekolah',t:'city'},{e:'🚎',n:'Bus Listrik',t:'city'},{e:'🏎️',n:'Mobil Balap',t:'city'},{e:'🏍️',n:'Motor Balap',t:'city'},{e:'🛵',n:'Motor Skuter',t:'city'},{e:'🚲',n:'Sepeda',t:'city'},{e:'🛺',n:'Bajaj',t:'city'},{e:'🚐',n:'Mobil Van',t:'city'},{e:'🚚',n:'Truk Barang',t:'city'},
-            {e:'🚑',n:'Ambulans',t:'emergency'},{e:'🚒',n:'Pemadam Kebakaran',t:'emergency'},{e:'🚓',n:'Mobil Polisi',t:'emergency'},{e:'🚔',n:'Patroli Polisi',t:'emergency'},{e:'🚁',n:'Helikopter Penyelamat',t:'emergency'},
-            {e:'🚜',n:'Traktor Sawah',t:'work'},{e:'🏗️',n:'Derek Konstruksi',t:'work'},{e:'🚛',n:'Truk Besar',t:'work'},{e:'🛻',n:'Mobil Pickup',t:'work'},
-            {e:'🚀',n:'Roket Luar Angkasa',t:'air'},{e:'✈️',n:'Pesawat Terbang',t:'air'},{e:'🛫',n:'Pesawat Lepas Landas',t:'air'},{e:'🛬',n:'Pesawat Mendarat',t:'air'},{e:'🪂',n:'Parasut',t:'air'},{e:'🛸',n:'Pesawat UFO',t:'air'},{e:'🚁',n:'Helikopter',t:'air'},
-            {e:'🚢',n:'Kapal Pesiar',t:'water'},{e:'🛥️',n:'Kapal Cepat',t:'water'},{e:'🚤',n:'Perahu Motor',t:'water'},{e:'🛳️',n:'Kapal Laut',t:'water'},{e:'⛵',n:'Perahu Layar',t:'water'},{e:'🛶',n:'Sampan',t:'water'},{e:'⛴️',n:'Kapal Feri',t:'water'},
-            {e:'🚂',n:'Kereta Uap',t:'rail'},{e:'🚆',n:'Kereta Cepat',t:'rail'},{e:'🚄',n:'Shinkansen',t:'rail'},{e:'🚇',n:'Kereta Bawah Tanah',t:'rail'},{e:'🚃',n:'Gerbong Kereta',t:'rail'},{e:'🚋',n:'Trem',t:'rail'},{e:'🚈',n:'LRT',t:'rail'}
-        ];
-
-        const colors = [{n:'Merah',h:'#ef4444'},{n:'Biru',h:'#3b82f6'},{n:'Hijau',h:'#22c55e'},{n:'Kuning',h:'#eab308'},{n:'Oranye',h:'#f97316'},{n:'Ungu',h:'#a855f7'},{n:'Pink',h:'#f472b6'},{n:'Cokelat',h:'#78350f'},{n:'Hitam',h:'#000000'}];
-        
-        const animalDB = [
-            {e:'🦖',n:'T-Rex',t:'dino'},{e:'🦕',n:'Brontosaurus',t:'dino'},{e:'🐊',n:'Buaya Purba',t:'dino'},{e:'🦎',n:'Dino Kecil',t:'dino'},{e:'🐉',n:'Naga Hijau',t:'dino'},{e:'🐲',n:'Kepala Naga',t:'dino'},
-            {e:'🐶',n:'Anjing',t:'pet'},{e:'🐱',n:'Kucing',t:'pet'},{e:'🐭',n:'Tikus',t:'pet'},{e:'🐹',n:'Hamster',t:'pet'},{e:'🐰',n:'Kelinci',t:'pet'},{e:'🦊',n:'Rubah',t:'wild'},{e:'🐻',n:'Beruang',t:'wild'},{e:'🐼',n:'Panda',t:'wild'},{e:'🐨',n:'Koala',t:'wild'},{e:'🐯',n:'Harimau',t:'wild'},{e:'🦁',n:'Singa',t:'wild'},{e:'🐮',n:'Sapi',t:'pet'},{e:'🐷',n:'Babi',t:'pet'},{e:'🐸',n:'Katak',t:'wild'},{e:'🐵',n:'Monyet',t:'wild'},{e:'🐔',n:'Ayam',t:'pet'},{e:'🐧',n:'Penguin',t:'wild'},{e:'🐦',n:'Burung Biru',t:'bird'},{e:'🐤',n:'Anak Ayam',t:'pet'},{e:'🐣',n:'Baru Menetas',t:'pet'},{e:'🐥',n:'Burung Kuning',t:'bird'},{e:'🦆',n:'Bebek',t:'pet'},{e:'🦅',n:'Elang',t:'bird'},{e:'🦉',n:'Burung Hantu',t:'bird'},{e:'🦇',n:'Kelelawar',t:'wild'},{e:'🐺',n:'Serigala',t:'wild'},{e:'🐗',n:'Babi Hutan',t:'wild'},{e:'🐴',n:'Kuda',t:'pet'},{e:'🦄',n:'Unicorn',t:'wild'},{e:'🐝',n:'Lebah',t:'bug'},{e:'🐛',n:'Ulat',t:'bug'},{e:'🦋',n:'Kupu-kupu',t:'bug'},{e:'🐌',n:'Siput',t:'bug'},{e:'🐞',n:'Kepik',t:'bug'},{e:'🐜',n:'Semut',t:'bug'},{e:'🦗',n:'Belalang',t:'bug'},{e:'🕷️',n:'Laba-laba',t:'bug'},{e:'🦂',n:'Kalajengking',t:'wild'},{e:'🐢',n:'Kura-kura',t:'wild'},{e:'🐍',n:'Ular',t:'wild'},{e:'🐙',n:'Gurita',t:'sea'},{e:'🦑',n:'Cumi-cumi',t:'sea'},{e:'🦐',n:'Udang',t:'sea'},{e:'🦞',n:'Lobster',t:'sea'},{e:'🦀',n:'Kepiting',t:'sea'},{e:'🐡',n:'Ikan Buntal',t:'sea'},{e:'🐠',n:'Ikan Tropis',t:'sea'},{e:'🐟',n:'Ikan Biru',t:'sea'},{e:'🐬',n:'Lumba-lumba',t:'sea'},{e:'🐳',n:'Paus Biru',t:'sea'},{e:'🐋',n:'Paus Besar',t:'sea'},{e:'鲨',n:'Hiu',t:'sea'},{e:'🦓',n:'Zebra',t:'wild'},{e:'🦒',n:'Jerapah',t:'wild'},{e:'🐘',n:'Gajah',t:'wild'},{e:'🦏',n:'Badak',t:'wild'},{e:'🦛',n:'Kuda Nil',t:'wild'},{e:'🐪',n:'Unta',t:'wild'},{e:'🐑',n:'Domba',t:'pet'},{e:'🐐',n:'Kambing',t:'pet'},{e:'🦌',n:'Rusa',t:'wild'},{e:'🐿️',n:'Tupai',t:'wild'},{e:'🦔',n:'Landak',t:'wild'},{e:'🦢',n:'Angsa',t:'bird'},{e:'🦩',n:'Flamingo',t:'bird'},{e:'🦚',n:'Merak',t:'bird'},{e:'🦘',n:'Kangguru',t:'wild'},{e:'🦥',n:'Sloth',t:'wild'}
-        ];
-
-        // --- LOGIKA VIDEO SEARCH ---
-        async function searchYoutube(query) {
-            if (!query || query.trim() === "") return;
-            vibrateDevice(20);
-            const list = document.getElementById('video-list');
-            list.innerHTML = `<div class="text-rose-500 kids-font p-10">Mencari video ${query}...</div>`;
-            speakRealistic("Mencari video " + query);
-            const safeQuery = encodeURIComponent(query + " anak edukasi kartun");
-            list.innerHTML = `
-                <div class="tv-frame shadow-xl">
-                    <h3 class="kids-font text-white mb-2 text-sm text-center">Video: ${query}</h3>
-                    <div class="video-wrapper">
-                        <iframe src="https://www.youtube.com/embed?listType=search&list=${safeQuery}" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            `;
-            document.getElementById('yt-search-input').value = '';
+        function initLetters() {
+            const grid = document.getElementById('letter-grid'); grid.innerHTML = '';
+            alphabets.forEach(a => {
+                const b = document.createElement('button');
+                b.className = "bg-blue-100 p-3 rounded-xl kids-font text-blue-600 border-b-4 border-blue-200 active:scale-95";
+                b.innerText = a.h;
+                b.onclick = () => {
+                    document.getElementById('letter-big').innerText = a.h;
+                    document.getElementById('letter-word').innerText = a.w + " " + a.e;
+                    speakRealistic(a.h + " untuk " + a.w); addStar(1);
+                };
+                grid.appendChild(b);
+            });
         }
 
-        // --- LOGIKA PUZZLE ---
+        function initColors() {
+            const grid = document.getElementById('color-grid'); grid.innerHTML = '';
+            colors.forEach(c => {
+                const b = document.createElement('button'); b.className = "h-12 rounded-xl shadow border-4 border-white active:scale-95"; b.style.backgroundColor = c.h;
+                b.onclick = () => { 
+                    document.getElementById('color-box').style.backgroundColor = c.h; 
+                    document.getElementById('color-name').innerText = c.n; 
+                    speakRealistic(c.n); addStar(1); 
+                };
+                grid.appendChild(b);
+            });
+        }
+
         function initPuzzle() {
-            const pool = [...animalDB.slice(0, 15), ...carDB.slice(0, 15)];
+            const pool = [...animalDB.darat, ...carDB.darat, ...alphabets, ...foodDB.buah];
             const target = pool[Math.floor(Math.random() * pool.length)];
             const targetEl = document.getElementById('puzzle-target');
             targetEl.innerText = target.e || target.h;
@@ -320,159 +528,26 @@
             optGrid.innerHTML = '';
             options.forEach(opt => {
                 const btn = document.createElement('button');
-                btn.className = "text-5xl p-4 bg-white rounded-2xl shadow-md border-b-4 border-slate-200 active:scale-90 transition-all";
-                btn.innerText = opt.e || opt.h;
+                btn.className = "text-[10px] font-bold p-3 bg-white rounded-2xl shadow-md border-b-4 border-slate-200 active:scale-90 flex items-center justify-center text-center uppercase h-20 w-20";
+                btn.innerText = opt.n || opt.w;
                 btn.onclick = () => {
-                    if(opt.e === target.e) {
-                        vibrateDevice(60); // Getar lebih lama untuk jawaban benar
+                    if(opt === target) {
                         targetEl.classList.remove('opacity-20', 'grayscale');
-                        confetti();
-                        speakRealistic("Hebat! Benar!");
-                        addStar(5);
-                        setTimeout(initPuzzle, 2000);
+                        confetti(); speakRealistic("Hebat! Kamu pintar sekali!");
+                        addStar(10); setTimeout(initPuzzle, 2000);
                     } else {
-                        vibrateDevice([30, 30, 30]); // Getar pendek 3x untuk salah
-                        speakRealistic("Coba lagi sayang");
+                        vibrateDevice(100); speakRealistic("Ayo coba lagi!");
                     }
                 };
                 optGrid.appendChild(btn);
             });
         }
 
-        // --- NAVIGASI & INIT ---
-        function showSection(id) {
-            vibrateDevice(30);
-            document.getElementById('home-container').classList.add('hidden-section');
-            document.getElementById('game-container').classList.remove('hidden-section');
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden-section'));
-            document.getElementById(id).classList.remove('hidden-section');
-            
-            if(id === 'angka') initNumbers();
-            if(id === 'huruf') initLetters();
-            if(id === 'mobil') initCars();
-            if(id === 'warna') initColors();
-            if(id === 'hewan') initAnimals();
-            if(id === 'cocok') initPuzzle();
-            if(id === 'video') initVideos();
-        }
-
-        function initNumbers() {
-            const grid = document.getElementById('number-grid'); grid.innerHTML = '';
-            for(let i=1; i<=20; i++) {
-                const b = document.createElement('button');
-                b.className = "bg-orange-100 p-4 rounded-xl kids-font text-orange-600 border-b-4 border-orange-200";
-                b.innerText = i;
-                b.onclick = () => {
-                    vibrateDevice(20);
-                    document.getElementById('big-number').innerText = i;
-                    document.getElementById('number-objects').innerHTML = '🍎'.repeat(i);
-                    speakRealistic(i); addStar(1);
-                };
-                grid.appendChild(b);
-            }
-        }
-
-        function initLetters() {
-            const grid = document.getElementById('letter-grid'); grid.innerHTML = '';
-            alphabets.forEach(a => {
-                const b = document.createElement('button');
-                b.className = "bg-blue-100 p-3 rounded-xl kids-font text-blue-600 border-b-4 border-blue-200";
-                b.innerText = a.h;
-                b.onclick = () => {
-                    vibrateDevice(20);
-                    document.getElementById('letter-big').innerText = a.h;
-                    document.getElementById('letter-word').innerText = a.w + " " + a.e;
-                    speakRealistic(a.h + " untuk " + a.w); addStar(1);
-                };
-                grid.appendChild(b);
-            });
-        }
-
-        function initCars() {
-            const grid = document.getElementById('car-grid');
-            const filter = document.getElementById('car-filter').value;
-            grid.innerHTML = '';
-            const filtered = filter === 'all' ? carDB : carDB.filter(c => c.t === filter);
-            filtered.forEach(c => {
-                const b = document.createElement('button');
-                b.className = "p-3 bg-white rounded-xl text-4xl shadow car-card border-b-4 border-slate-200";
-                b.innerText = c.e;
-                b.onclick = () => {
-                    vibrateDevice(20);
-                    document.getElementById('car-emoji').innerText = c.e;
-                    document.getElementById('car-name').innerText = c.n;
-                    speakRealistic(c.n);
-                    addStar(1);
-                };
-                grid.appendChild(b);
-            });
-        }
-
-        function initColors() {
-            const grid = document.getElementById('color-grid'); grid.innerHTML = '';
-            colors.forEach(c => {
-                const b = document.createElement('button'); b.className = "h-14 rounded-xl shadow active:scale-90 transition-all"; b.style.backgroundColor = c.h;
-                b.onclick = () => { 
-                    vibrateDevice(20);
-                    document.getElementById('color-box').style.backgroundColor = c.h; 
-                    document.getElementById('color-name').innerText = c.n; 
-                    speakRealistic(c.n); addStar(1); 
-                };
-                grid.appendChild(b);
-            });
-        }
-
-        function initAnimals() {
-            const grid = document.getElementById('animal-grid'); 
-            const filter = document.getElementById('animal-filter').value;
-            grid.innerHTML = '';
-            const filtered = filter === 'all' ? animalDB : animalDB.filter(a => a.t === filter);
-            filtered.forEach(a => {
-                const b = document.createElement('button');
-                b.className = "p-3 bg-white rounded-xl text-4xl shadow animal-card border-b-4 border-slate-100";
-                b.innerText = a.e;
-                b.onclick = () => {
-                    vibrateDevice(20);
-                    document.getElementById('animal-emoji').innerText = a.e;
-                    document.getElementById('animal-name').innerText = a.n;
-                    speakRealistic(a.n);
-                    addStar(1);
-                };
-                grid.appendChild(b);
-            });
-        }
-
-        function initVideos() {
-            const tabs = document.getElementById('video-tabs'); tabs.innerHTML = '';
-            const videoCats = { 'Lagu': ['m0kL6Yp_3-w'], 'Belajar': ['sqipk9j7AyU'], 'Kartun': ['K5qY7p-oE0U'] };
-            Object.keys(videoCats).forEach((cat, idx) => {
-                const b = document.createElement('button');
-                b.className = `px-6 py-2 rounded-full kids-font text-sm whitespace-nowrap ${idx===0?'bg-rose-500 text-white':'bg-rose-100'}`;
-                b.innerText = cat;
-                b.onclick = () => {
-                    vibrateDevice(20);
-                    document.querySelectorAll('#video-tabs button').forEach(btn => btn.className = 'px-6 py-2 rounded-full kids-font text-sm bg-rose-100');
-                    b.className = 'px-6 py-2 rounded-full kids-font text-sm bg-rose-500 text-white';
-                    renderVideoList(videoCats[cat]);
-                };
-                tabs.appendChild(b);
-            });
-            renderVideoList(videoCats['Lagu']);
-        }
-
-        function renderVideoList(ids) {
-            const list = document.getElementById('video-list'); list.innerHTML = '';
-            ids.forEach(id => {
-                const d = document.createElement('div'); d.className = "tv-frame";
-                d.innerHTML = `<div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe></div>`;
-                list.appendChild(d);
-            });
-        }
-
         function goHome() {
-            vibrateDevice(40);
             window.speechSynthesis.cancel();
+            document.querySelectorAll('iframe').forEach(f => f.src = "");
             document.getElementById('game-container').classList.add('hidden-section');
+            document.getElementById('app-header').classList.add('hidden-section');
             document.getElementById('home-container').classList.remove('hidden-section');
         }
     </script>
